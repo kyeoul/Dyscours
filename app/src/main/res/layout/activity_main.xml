@@ -18,7 +18,9 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/opinionsList"/>
+            android:id="@+id/debateList"
+            android:background="@android:color/transparent"
+            android:cacheColorHint="@android:color/transparent"/>
 
     </LinearLayout>
 
