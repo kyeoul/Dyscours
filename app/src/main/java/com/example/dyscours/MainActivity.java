@@ -23,6 +23,13 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Debate> debateList = new ArrayList<>();
         debateList.add(new Debate("i discuss things", "jeneric"));
         debateList.add(new Debate("plz roastt me", "wfaieufhwoieufwhef"));
+        debateList.add(new Debate("generic name", "generic username"));
+        debateList.add(new Debate("generic name", "generic username"));
+        debateList.add(new Debate("generic name", "generic username"));
+        debateList.add(new Debate("generic name", "generic username"));
+        debateList.add(new Debate("generic name", "generic username"));
+        debateList.add(new Debate("generic name", "generic username"));
+        debateList.add(new Debate("generic name", "generic username"));
 
         ListView listView = (ListView) findViewById(R.id.debateList);
 

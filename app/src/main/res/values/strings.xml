@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Dyscours</string>
     <string name="fillerString">exciting filler</string>
+    <string name="productiveString">How productive was your discussion?</string>
 </resources>

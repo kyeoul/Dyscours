@@ -4,7 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".MainActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dyscours"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:tint="#90FFFFFF"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -24,12 +33,6 @@
         </ListView>
 
     </LinearLayout>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/dyscours"
-        android:tint="#90FFFFFF"/>
 
     <ImageButton
         android:layout_width="70dp"
