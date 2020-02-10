@@ -16,12 +16,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
+        super.onCreate(savedInstanceState);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        super.onCreate(savedInstanceState);
 
         ArrayList<Debate> debateList = new ArrayList<>();
-        debateList.add(new Debate("i would like flame war plz", "jeneric"));
+        debateList.add(new Debate("i discuss things", "jeneric"));
         debateList.add(new Debate("plz roastt me", "wfaieufhwoieufwhef"));
 
         ListView listView = (ListView) findViewById(R.id.debateList);

@@ -20,9 +20,16 @@
             android:layout_height="match_parent"
             android:id="@+id/debateList"
             android:background="@android:color/transparent"
-            android:cacheColorHint="@android:color/transparent"/>
+            android:cacheColorHint="@android:color/transparent">
+        </ListView>
 
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/dyscours"
+        android:tint="#90FFFFFF"/>
 
     <ImageButton
         android:layout_width="70dp"
@@ -30,7 +37,8 @@
         android:id="@+id/buttonAdd"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="40dp"
+        android:layout_marginBottom="80dp"
+        android:layout_marginRight="40dp"
         android:background="@drawable/button_circle"
         android:src="@drawable/ic_action_add"/>
 
