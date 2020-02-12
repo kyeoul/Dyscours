@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "TagMainActivity";
+    private FirebaseHelper firebaseHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
@@ -22,21 +23,13 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         ArrayList<Debate> debateList = new ArrayList<>();
-        debateList.add(new Debate("i discuss things", "jeneric"));
-        debateList.add(new Debate("plz roastt me", "wfaieufhwoieufwhef"));
-        debateList.add(new Debate("generic name", "generic username"));
-        debateList.add(new Debate("generic name", "generic username"));
-        debateList.add(new Debate("generic name", "generic username"));
-        debateList.add(new Debate("generic name", "generic username"));
-        debateList.add(new Debate("generic name", "generic username"));
-        debateList.add(new Debate("generic name", "generic username"));
-        debateList.add(new Debate("generic name", "generic username"));
 
         ListView listView = (ListView) findViewById(R.id.debateList);
 
         ListviewAdapter adapter = new ListviewAdapter(getApplicationContext(), debateList);
         listView.setAdapter(adapter);
 
-        Log.d(TAG, new FirebaseHelper().startConversation(5));
+        firebaseHelper = new FirebaseHelper();
+        firebaseHelper.startDebate(new Debate());
     }
 }

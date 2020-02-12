@@ -1,25 +1,27 @@
 package com.example.dyscours;
 
-public class Debate {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Debate  {
 
     private String debateName;
     private String userId;
-    private int startTime;
-    private int endTime;
+    private int timeLimit;
+    private int key;
 
-    public Debate(String debateName, String userId, int startTime, int endTime){
+    public Debate(String debateName, String userId, int timeLimit){
         this.debateName = debateName;
         this.userId = userId;
-        this.startTime = startTime;
-        this.endTime = endTime;
+        this.timeLimit = timeLimit;
     }
 
     public Debate(){
-        this.debateName = null;
-        this.userId = null;
-        this.startTime = -1;
-        this.endTime = -2;
+        this.debateName = "null";
+        this.userId = "null";
+        this.timeLimit = -1;
     }
+
 
     public String getDebateName() {
         return debateName;
@@ -37,19 +39,19 @@ public class Debate {
         this.userId = userId;
     }
 
-    public int getStartTime() {
-        return startTime;
+    public int getTimeLimit() {
+        return timeLimit;
     }
 
-    public void setStartTime(int startTime) {
-        this.startTime = startTime;
+    public void setTimeLimit(int timeLimit) {
+        this.timeLimit = timeLimit;
     }
 
-    public int getEndTime() {
-        return endTime;
+    public int getKey() {
+        return key;
     }
 
-    public void setEndTime(int endTime) {
-        this.endTime = endTime;
+    public void setKey(int key) {
+        this.key = key;
     }
 }
