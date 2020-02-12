@@ -24,7 +24,7 @@
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
             android:textColor="#FFFFFF"
             android:layout_height="wrap_content"
-            android:text="Dyscours Home Page"
+            android:text="@string/app_name"
             android:layout_gravity="center_vertical"
             android:layout_centerVertical="true"
             android:layout_weight="1" />

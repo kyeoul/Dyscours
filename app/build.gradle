@@ -39,6 +39,7 @@ dependencies {
 
     // Firebase UI
     implementation 'com.firebaseui:firebase-ui-database:3.3.1'
+    implementation 'com.google.android.material:material:1.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

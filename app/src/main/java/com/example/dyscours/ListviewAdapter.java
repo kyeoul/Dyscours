@@ -30,8 +30,8 @@ public class ListviewAdapter extends BaseAdapter {
 
     public View getView(int i, View view, ViewGroup viewGroup){
         view = inflater.inflate(R.layout.listview_layout, null);
-        String debateName = debateList.get(i).getDebateName();
-        String debateUser = debateList.get(i).getUserName();
+        String debateName = "Hi ark";
+        String debateUser = "my name is thomas";
         TextView debateNameView = (TextView) view.findViewById(R.id.debateName);
         debateNameView.setText(debateName);
         TextView debateUserView = (TextView) view.findViewById(R.id.debateUser);

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_participate"
+        android:icon="@drawable/ic_participate"
+        android:iconTint="#000000"
+        android:title="Participate"/>
+
+    <item
+        android:id="@+id/nav_spectate"
+        android:icon="@drawable/ic_spectate"
+        android:iconTint="#000000"
+        android:title="Spectate" />
+</menu>
