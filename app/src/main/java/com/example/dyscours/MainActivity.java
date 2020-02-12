@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -12,7 +13,8 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
+    public static final String TAG = "TagMainActivity";
+    private FirebaseHelper firebaseHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
@@ -26,5 +28,8 @@ public class MainActivity extends AppCompatActivity {
 
         ListviewAdapter adapter = new ListviewAdapter(getApplicationContext(), debateList);
         listView.setAdapter(adapter);
+
+        firebaseHelper = new FirebaseHelper();
+        firebaseHelper.startDebate(new Debate());
     }
 }
