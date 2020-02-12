@@ -12,6 +12,7 @@ public class FirebaseHelper {
 
     public String startConversation(int timeLimit){
         String key =  mFirebaseDatabaseReference.push().getKey();
+        mFirebaseDatabaseReference.child(key).setValue("BOOM");
         return key; 
     }
 
