@@ -29,7 +29,5 @@ public class MainActivity extends AppCompatActivity {
         ListviewAdapter adapter = new ListviewAdapter(getApplicationContext(), debateList);
         listView.setAdapter(adapter);
 
-        firebaseHelper = new FirebaseHelper();
-        firebaseHelper.startDebate(new Debate());
     }
 }
