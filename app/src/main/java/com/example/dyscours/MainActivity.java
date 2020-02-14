@@ -3,6 +3,7 @@ package com.example.dyscours;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Adapter;
@@ -28,6 +29,5 @@ public class MainActivity extends AppCompatActivity {
 
         ListviewAdapter adapter = new ListviewAdapter(getApplicationContext(), debateList);
         listView.setAdapter(adapter);
-
     }
 }

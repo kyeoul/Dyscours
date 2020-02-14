@@ -41,6 +41,7 @@ public class FirebaseHelper {
         newData.put("timeLimit", debate.getTimeLimit());
         db.child(key).setValue(newData);
         debate.setKey(key);
+        debate.setUser1(true);
         currentdebate = debate;
         db.child(key).child("messages").addChildEventListener(new ChildEventListener() {
             @Override
@@ -71,8 +72,24 @@ public class FirebaseHelper {
         });
     }
 
-    public Debate joinDebate(String key, final ChatActivity chatActivity){
+    public void joinDebate(final Debate debate, final ChatActivity chatActivity){
         DatabaseReference db = mFirebaseDatabaseReference.child("debates");
+        String key = debate.getKey();
+        db.child(key).child("user2").setValue(debate.getUserId());
+        debate.setUser1(false);
+        db.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                debate.setDebateName((String) dataSnapshot.child("debateName").getValue());
+                debate.setTimeLimit((int) dataSnapshot.child("timeLimit").getValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         db.child(key).child("messages").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -100,13 +117,13 @@ public class FirebaseHelper {
 
             }
         });
-        return new Debate();
+
     }
 
     public boolean sendMessage(Message message){
         DatabaseReference db = mFirebaseDatabaseReference.child("debates").child(currentdebate.getKey());
         message.setUser(currentdebate.isUser1() ? 1 : 2);
-        message.setTimeStamp(ServerValue.TIMESTAMP);
+        message.setTimeStampAsMapStringstring(ServerValue.TIMESTAMP);
         db.child("messages").push().setValue(message);
         return true;
     }

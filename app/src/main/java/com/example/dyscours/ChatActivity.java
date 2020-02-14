@@ -10,6 +10,10 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        FirebaseHelper firebaseHelper = new FirebaseHelper();
+        firebaseHelper.startDebate(new Debate("We Need to Build a Wall.", "TESTUSERID", 500), this);
+        firebaseHelper.sendMessage(new Message("Hi"));
     }
 
     public void addMessage(Message message){
