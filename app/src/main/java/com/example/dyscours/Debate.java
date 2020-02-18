@@ -18,6 +18,11 @@ public class Debate  {
         this.timeLimit = timeLimit;
     }
 
+    public Debate (String userId, String key){
+        this.userId = userId;
+        this.key = key;
+    }
+
     public Debate(){
         this.debateName = "null";
         this.userId = "null";

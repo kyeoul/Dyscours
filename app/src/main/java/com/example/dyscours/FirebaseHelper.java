@@ -32,7 +32,10 @@ public class FirebaseHelper {
         currentdebate = null;
     }
 
-    public void startDebate(Debate debate, final ChatActivity chatActivity){
+    public boolean startDebate(Debate debate, final ChatActivity chatActivity){
+        if (debate.getUserId() == null || debate.getTimeLimit() < 0 || debate.getDebateName() == null){
+            return false;
+        }
         DatabaseReference db = mFirebaseDatabaseReference.child("debates");
         String key =  db.push().getKey();
         Map<String, Object> newData = new HashMap<>();
@@ -46,6 +49,7 @@ public class FirebaseHelper {
         db.child(key).child("messages").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, "onChildAddedA");
                 Message message = dataSnapshot.getValue(Message.class);
                 chatActivity.addMessage(message);
             }
@@ -70,18 +74,24 @@ public class FirebaseHelper {
 
             }
         });
+        return true;
     }
 
-    public void joinDebate(final Debate debate, final ChatActivity chatActivity){
+    public boolean joinDebate(final Debate debate, final ChatActivity chatActivity){
+        if (debate.getUserId() == null || debate.getKey() == null){
+            return false;
+        }
         DatabaseReference db = mFirebaseDatabaseReference.child("debates");
         String key = debate.getKey();
         db.child(key).child("user2").setValue(debate.getUserId());
         debate.setUser1(false);
+        currentdebate = debate;
         db.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 debate.setDebateName((String) dataSnapshot.child("debateName").getValue());
-                debate.setTimeLimit((int) dataSnapshot.child("timeLimit").getValue());
+                debate.setTimeLimit((int) ((long) dataSnapshot.child("timeLimit").getValue()));
+                Log.d(TAG, debate.getDebateName());
             }
 
             @Override
@@ -94,7 +104,9 @@ public class FirebaseHelper {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                 Message message = dataSnapshot.getValue(Message.class);
+                Log.d(TAG, message.getContent());
                 chatActivity.addMessage(message);
+                Log.d(TAG, "onChildAddedB");
             }
 
             @Override
@@ -117,13 +129,16 @@ public class FirebaseHelper {
 
             }
         });
+        return true;
+    }
 
+    public void leaveDebate(){
+        currentdebate = null;
     }
 
     public boolean sendMessage(Message message){
         DatabaseReference db = mFirebaseDatabaseReference.child("debates").child(currentdebate.getKey());
         message.setUser(currentdebate.isUser1() ? 1 : 2);
-        message.setTimeStampAsMapStringstring(ServerValue.TIMESTAMP);
         db.child("messages").push().setValue(message);
         return true;
     }

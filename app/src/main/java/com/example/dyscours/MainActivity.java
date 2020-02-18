@@ -29,5 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
         ListviewAdapter adapter = new ListviewAdapter(getApplicationContext(), debateList);
         listView.setAdapter(adapter);
+
+        //DEBUG DELETE
+        startActivity(new Intent(this, ChatActivity.class));
     }
 }
