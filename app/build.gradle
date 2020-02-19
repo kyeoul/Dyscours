@@ -40,6 +40,9 @@ dependencies {
     // Firebase UI
     implementation 'com.firebaseui:firebase-ui-database:3.3.1'
     implementation 'com.google.android.material:material:1.1.0'
+
+    //Recycler view
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

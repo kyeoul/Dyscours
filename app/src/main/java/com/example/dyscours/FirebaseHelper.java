@@ -143,4 +143,23 @@ public class FirebaseHelper {
         return true;
     }
 
+    public DatabaseReference getmFirebaseDatabaseReference() {
+        return mFirebaseDatabaseReference;
+    }
+
+    public void setmFirebaseDatabaseReference(DatabaseReference mFirebaseDatabaseReference) {
+        this.mFirebaseDatabaseReference = mFirebaseDatabaseReference;
+    }
+
+    public static String getTAG() {
+        return TAG;
+    }
+
+    public Debate getCurrentdebate() {
+        return currentdebate;
+    }
+
+    public void setCurrentdebate(Debate currentdebate) {
+        this.currentdebate = currentdebate;
+    }
 }

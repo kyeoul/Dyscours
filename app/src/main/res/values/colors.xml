@@ -4,4 +4,7 @@
     <color name="colorPrimaryDark">#0064C5</color>
     <color name="colorAccent">#D81B60</color>
     <color name="colorSide">#A0A0A0</color>
+    <color name="thisUserMessageColor">#FC7575</color>
+    <color name="thatUserMessageColor">#4AB3EB</color>
+    <color name="messageTextColor">#ffffff</color>
 </resources>
