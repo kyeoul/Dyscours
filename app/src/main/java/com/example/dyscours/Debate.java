@@ -7,8 +7,10 @@ public class Debate  {
 
     private String debateName;
     private String userId;
+    private boolean isUser1;
+    private int postedTime;
     private int timeLimit;
-    private int key;
+    private String key;
 
     public Debate(String debateName, String userId, int timeLimit){
         this.debateName = debateName;
@@ -16,10 +18,16 @@ public class Debate  {
         this.timeLimit = timeLimit;
     }
 
+    public Debate (String userId, String key){
+        this.userId = userId;
+        this.key = key;
+    }
+
     public Debate(){
         this.debateName = "null";
         this.userId = "null";
         this.timeLimit = -1;
+        this.isUser1 = false;
     }
 
 
@@ -47,11 +55,19 @@ public class Debate  {
         this.timeLimit = timeLimit;
     }
 
-    public int getKey() {
+    public String getKey() {
         return key;
     }
 
-    public void setKey(int key) {
+    public void setKey(String key) {
         this.key = key;
+    }
+
+    public boolean isUser1() {
+        return isUser1;
+    }
+
+    public void setUser1(boolean user1) {
+        isUser1 = user1;
     }
 }
