@@ -6,4 +6,9 @@
     <string name="amazingString">Amazing</string>
     <string name="browseString">Browse more opinions</string>
     <string name="homeString">Back to home screen</string>
+    <string name="topicPromptString">Debate topic</string>
+    <string name="opinionPromptString">Opinion</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

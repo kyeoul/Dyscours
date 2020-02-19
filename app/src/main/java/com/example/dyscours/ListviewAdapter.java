@@ -35,6 +35,7 @@ public class ListviewAdapter extends BaseAdapter {
         TextView debateNameView = (TextView) view.findViewById(R.id.debateName);
         debateNameView.setText(debateName);
         TextView debateUserView = (TextView) view.findViewById(R.id.debateUser);
+        debateUserView.setText(debateUser);
         return view;
     }
 }
