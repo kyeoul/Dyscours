@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
  * Recycler view implementation greatly inspired by https://developer.android.com/guide/topics/ui/layout/recyclerview
  */
 public class ChatActivity extends AppCompatActivity {
+    public static final String TAG = "DyscoursDebugTagChat";
     private FirebaseHelper firebaseHelper;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -27,7 +29,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         firebaseHelper = new FirebaseHelper();
-        firebaseHelper.startDebate(new Debate("THIS IS A TEST", "TESTUSER1", 600), this);
+        Log.d(TAG, "" + firebaseHelper.getUserRating("437yrfuihfjk3"));
 
         messages = new ArrayList<Message>();
 
