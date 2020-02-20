@@ -162,4 +162,73 @@ public class FirebaseHelper {
     public void setCurrentdebate(Debate currentdebate) {
         this.currentdebate = currentdebate;
     }
+
+    public int getUserRating(String userId){
+        DatabaseReference db = mFirebaseDatabaseReference.child("users").child(userId);
+         class A {
+            private int m;
+            A(int m){
+                this.m = m;
+            }
+
+            public int get(){
+                return m;
+            }
+
+            public void set(int m) {
+                this.m = m;
+            }
+        }
+
+        final A mInt = new A(-1);
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mInt.set(((Long) dataSnapshot.child("rating").getValue()).intValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        return mInt.get();
+    }
+
+    public void setUserRating(String userId, int rating){
+        DatabaseReference db = mFirebaseDatabaseReference.child("users").child(userId);
+        db.child("rating").setValue(rating);
+    }
+
+    public void incrementUserRating(String userId, int amount){
+        DatabaseReference db = mFirebaseDatabaseReference.child("users").child(userId);
+        class A {
+            private int m;
+            A(int m){
+                this.m = m;
+            }
+
+            public int get(){
+                return m;
+            }
+
+            public void set(int m) {
+                this.m = m;
+            }
+        }
+
+        final A mInt = new A(-1);
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mInt.set(((Long) dataSnapshot.child("rating").getValue()).intValue());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        db.child("rating").setValue(mInt.get() + amount);
+    }
 }

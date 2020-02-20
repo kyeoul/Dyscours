@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ListviewAdapter extends BaseAdapter {
@@ -30,12 +29,13 @@ public class ListviewAdapter extends BaseAdapter {
 
     public View getView(int i, View view, ViewGroup viewGroup){
         view = inflater.inflate(R.layout.listview_layout, null);
-        String debateName = "Hi ark";
-        String debateUser = "my name is thomas";
+        Debate debate = debateList.get(i);
+        String debateName = debate.getDebateName();
+        int debateUserRating = debate.getUser1Rating();
         TextView debateNameView = (TextView) view.findViewById(R.id.debateName);
         debateNameView.setText(debateName);
-        TextView debateUserView = (TextView) view.findViewById(R.id.debateUser);
-        debateUserView.setText(debateUser);
+        TextView debateUserView = (TextView) view.findViewById(R.id.debateUserRating);
+        debateUserView.setText(Integer.toString(debateUserRating));
         return view;
     }
 }
