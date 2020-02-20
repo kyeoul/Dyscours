@@ -1,5 +1,6 @@
 package com.example.dyscours;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,11 +57,11 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         int user = chatActivity.getFirebaseHelper().getCurrentdebate().isUser1() ? 1 : 2;
         if (mDataset.get(position).getUser() == user) {
             contentTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            contentTextView.setBackgroundColor(chatActivity.getResources().getColor(R.color.thisUserMessageColor));
+            contentTextView.setBackgroundTintList(ColorStateList.valueOf(chatActivity.getResources().getColor(R.color.thisUserMessageColor)));
         }
         else {
             contentTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
-            contentTextView.setBackgroundColor(chatActivity.getResources().getColor(R.color.thatUserMessageColor));
+            contentTextView.setBackgroundTintList(ColorStateList.valueOf(chatActivity.getResources().getColor(R.color.thatUserMessageColor)));
         }
     }
 

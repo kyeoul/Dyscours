@@ -18,6 +18,7 @@
             android:cacheColorHint="@android:color/transparent"/>
 
         <ImageButton
+            android:id="@+id/addDebateButton"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:background="@drawable/button_circle"

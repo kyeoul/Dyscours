@@ -32,9 +32,6 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        firebaseHelper = new FirebaseHelper();
-        firebaseHelper.startDebate(new Debate());
-
         if (savedInstanceState == null) {
             currentFragment = new fragmentParticipate();
             loadFragment();
@@ -58,6 +55,9 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
                 return false;
             }
         });
+
+        Intent intent = new Intent(this, ChatActivity.class);
+        startActivity(intent);
     }
 
     public boolean loadFragment(){

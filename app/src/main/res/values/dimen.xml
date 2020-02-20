@@ -4,4 +4,5 @@
     <dimen name="smallPadding">10dp</dimen>
 
     <dimen name="smallText">14sp</dimen>
+    <dimen name="mediumText">20sp</dimen>
 </resources>

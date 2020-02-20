@@ -12,6 +12,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -78,6 +80,13 @@ public class fragmentParticipate extends Fragment {
         arrayList.add(new Debate());
         ListviewAdapter listviewAdapter = new ListviewAdapter(getContext(), arrayList);
         listView.setAdapter(listviewAdapter);
+        ImageButton addButton = (ImageButton) view.findViewById(R.id.addDebateButton);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogBuilder();
+            }
+        });
         return view;
     }
 
