@@ -16,6 +16,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 
@@ -76,8 +78,10 @@ public class fragmentParticipate extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fragment_participate, container, false);
         ListView listView = (ListView) view.findViewById(R.id.debateList);
+        FirebaseHelper firebaseHelper = new FirebaseHelper();
         ArrayList<Debate> arrayList = new ArrayList<>();
-        arrayList.add(new Debate());
+        // DEBUG DELETE
+        arrayList.add(new Debate("", "", 5));
         ListviewAdapter listviewAdapter = new ListviewAdapter(getContext(), arrayList);
         listView.setAdapter(listviewAdapter);
         ImageButton addButton = (ImageButton) view.findViewById(R.id.addDebateButton);

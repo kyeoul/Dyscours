@@ -25,14 +25,6 @@ public class Debate  {
         this.key = key;
     }
 
-    public Debate(){
-        this.debateName = "null";
-        this.userId = "null";
-        this.timeLimit = -1;
-        this.isUser1 = false;
-    }
-
-
     public String getDebateName() {
         return debateName;
     }
