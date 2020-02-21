@@ -57,11 +57,11 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         int user = chatActivity.getFirebaseHelper().getCurrentdebate().isUser1() ? 1 : 2;
         if (mDataset.get(position).getUser() == user) {
             contentTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            contentTextView.setBackgroundTintList(ColorStateList.valueOf(chatActivity.getResources().getColor(R.color.thisUserMessageColor)));
+            contentTextView.setBackground(chatActivity.getResources().getDrawable(R.drawable.the_chat_bubble));
         }
         else {
             contentTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
-            contentTextView.setBackgroundTintList(ColorStateList.valueOf(chatActivity.getResources().getColor(R.color.thatUserMessageColor)));
+            contentTextView.setBackground(chatActivity.getResources().getDrawable(R.drawable.that_chat_bubble));
         }
     }
 

@@ -29,7 +29,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         firebaseHelper = new FirebaseHelper();
-        Log.d(TAG, "" + firebaseHelper.getUserRating("437yrfuihfjk3"));
+        firebaseHelper.startDebate(new Debate("We need more guns.", "TESTUSERID35", 5667, 200), this);
 
         messages = new ArrayList<Message>();
 
