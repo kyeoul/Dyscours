@@ -7,4 +7,5 @@
     <color name="thisUserMessageColor">#FC7575</color>
     <color name="thatUserMessageColor">#4AB3EB</color>
     <color name="messageTextColor">#ffffff</color>
+    <color name="colorRed">#FF0000</color>
 </resources>

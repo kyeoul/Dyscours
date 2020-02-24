@@ -74,7 +74,7 @@ public class fragmentSpectate extends Fragment{
         View view = inflater.inflate(R.layout.fragment_fragment_spectate, container, false);
         ListView listView = (ListView) view.findViewById(R.id.spectateList);
         ArrayList<Debate> arrayList = new ArrayList<Debate>();
-        arrayList.add(new Debate());
+        arrayList.add(new Debate("name", "9999", 90));
         ListviewAdapter listviewAdapter = new ListviewAdapter(getContext(), arrayList);
         listView.setAdapter(listviewAdapter);
         return view;
