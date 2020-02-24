@@ -27,6 +27,8 @@ public class FirebaseHelper {
     private DatabaseReference mFirebaseDatabaseReference;
     private static final String TAG = "TagFirebaseHelper";
     private Debate currentdebate;
+    private fragmentParticipate currentParticipate;
+    private fragmentSpectate currentSpectate;
 
     public FirebaseHelper() {
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
@@ -43,6 +45,8 @@ public class FirebaseHelper {
         newData.put("debateName", debate.getDebateName());
         newData.put("user1", debate.getUserId());
         newData.put("timeLimit", debate.getTimeLimit());
+        newData.put("user1Rating", debate.getUser1Rating());
+        newData.put("isOpenForParticipate", true);
         db.child(key).setValue(newData);
         debate.setKey(key);
         debate.setUser1(true);
@@ -85,6 +89,9 @@ public class FirebaseHelper {
         DatabaseReference db = mFirebaseDatabaseReference.child("debates");
         String key = debate.getKey();
         db.child(key).child("user2").setValue(debate.getUserId());
+        int user2Rating = debate.getUser2Rating();
+        db.child(key).child("user2Rating").setValue(user2Rating);
+        db.child(key).child("isOpenForParticipate").setValue(false);
         debate.setUser1(false);
         currentdebate = debate;
         db.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -92,6 +99,7 @@ public class FirebaseHelper {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 debate.setDebateName((String) dataSnapshot.child("debateName").getValue());
                 debate.setTimeLimit((int) ((long) dataSnapshot.child("timeLimit").getValue()));
+                debate.setUser1Rating((int) ((long) dataSnapshot.child("user1Rating").getValue()));
                 Log.d(TAG, debate.getDebateName());
             }
 
@@ -133,7 +141,7 @@ public class FirebaseHelper {
         return true;
     }
 
-    public void leaveDebate(){
+    public void endDebate(){
         currentdebate = null;
     }
 
@@ -233,13 +241,17 @@ public class FirebaseHelper {
         db.child("rating").setValue(mInt.get() + amount);
     }
 
-    // TODO: Finish this
-    public ArrayList<Debate> pullAllDebates(){
+    public boolean startPartcipateMonitor(final MainActivity mainActivity){
         DatabaseReference db = mFirebaseDatabaseReference.child("debates");
         db.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
+                String key = dataSnapshot.getKey();
+                int user1Rating = ((Long) dataSnapshot.child("user1Rating").getValue()).intValue();
+                int timeLimit =  ((Long) dataSnapshot.child("timeLimit").getValue()).intValue();
+                String debateName = (String) dataSnapshot.child("debateName").getValue();
+                boolean isOpenForParticipate = ((Boolean) dataSnapshot.child("isOpenForParticipate").getValue()).booleanValue();
+                mainActivity.addDebate(new Debate(key, debateName, user1Rating, timeLimit, isOpenForParticipate));
             }
 
             @Override
@@ -262,6 +274,6 @@ public class FirebaseHelper {
 
             }
         });
-        return new ArrayList<Debate>();
+        return true;
     }
 }

@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
     public static final String TAG = "TagMainActivity";
     private FirebaseHelper firebaseHelper;
     private Fragment currentFragment;
+    private ArrayList<Debate> participateDebates;
+    private ArrayList<Debate> spectateDebates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,5 +69,40 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
 
     public void onFragmentInteraction(Uri uri){
 
+    }
+
+    public void addDebate(Debate debate){
+        if (debate.isOpenForParticipate()){
+            participateDebates.add(debate);
+        }
+        else if (debate.isOpenForParticipate()){
+            spectateDebates.add(debate);
+        }
+    }
+
+    // TODO: FIx this
+    public void removeDebate(Debate debate){
+        int index = findDebate(spectateDebates, debate.getKey(), 0, spectateDebates.size());
+        spectateDebates.remove(index);
+    }
+
+    private int findDebate(ArrayList<Debate> debates, String key, int start, int end){
+        if (start > end || start > debates.size()){
+            return -1;
+        }
+        if (start == end){
+            return start;
+        }
+        int check = (start + end)/2;
+        int compare = debates.get(check).getKey().compareTo(key);
+        if (compare < 0){
+            return findDebate(debates, key, check + 1, end);
+        }
+        else if (compare > 0){
+            return findDebate(debates, key, start, check);
+        }
+        else {
+            return check;
+        }
     }
 }
