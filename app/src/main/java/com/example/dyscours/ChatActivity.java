@@ -49,8 +49,14 @@ public class ChatActivity extends AppCompatActivity {
     public void sendMessage(View v){
         EditText contentField = findViewById(R.id.messageEditText);
         String content = contentField.getText().toString();
-        firebaseHelper.sendMessage(new Message(content));
-        contentField.setText("");
+        if(content.equals("")){
+            Toast.makeText(this, "You need to type something", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            firebaseHelper.sendMessage(new Message(content));
+            contentField.setText("");
+            recyclerView.smoothScrollToPosition(mAdapter.getItemCount());
+        }
     }
 
     public FirebaseHelper getFirebaseHelper() {
