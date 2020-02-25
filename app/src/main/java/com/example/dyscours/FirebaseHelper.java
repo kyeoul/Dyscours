@@ -241,17 +241,19 @@ public class FirebaseHelper {
         db.child("rating").setValue(mInt.get() + amount);
     }
 
-    public boolean startPartcipateMonitor(final MainActivity mainActivity){
+    public boolean getAllDebates(final MainActivity mainActivity){
         DatabaseReference db = mFirebaseDatabaseReference.child("debates");
-        db.addChildEventListener(new ChildEventListener() {
+        ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Log.d(TAG, "onChildAdded");
                 String key = dataSnapshot.getKey();
                 int user1Rating = ((Long) dataSnapshot.child("user1Rating").getValue()).intValue();
                 int timeLimit =  ((Long) dataSnapshot.child("timeLimit").getValue()).intValue();
                 String debateName = (String) dataSnapshot.child("debateName").getValue();
                 boolean isOpenForParticipate = ((Boolean) dataSnapshot.child("isOpenForParticipate").getValue()).booleanValue();
                 mainActivity.addDebate(new Debate(key, debateName, user1Rating, timeLimit, isOpenForParticipate));
+                Log.d(TAG, "onChildAddedf");
             }
 
             @Override
@@ -273,7 +275,10 @@ public class FirebaseHelper {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+        db.addChildEventListener(childEventListener);
+        db.removeEventListener(childEventListener);
+        Log.d(TAG, "startMonitor3");
         return true;
     }
 }

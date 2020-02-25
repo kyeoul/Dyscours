@@ -24,7 +24,7 @@ import java.util.List;
  * Use the {@link fragmentSpectate#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragmentSpectate extends Fragment{
+public class fragmentSpectate extends DyscoursFragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -33,6 +33,8 @@ public class fragmentSpectate extends Fragment{
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private ListView listView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -72,13 +74,20 @@ public class fragmentSpectate extends Fragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fragment_spectate, container, false);
-        ListView listView = (ListView) view.findViewById(R.id.spectateList);
-        ArrayList<Debate> arrayList = new ArrayList<Debate>();
+        listView = (ListView) view.findViewById(R.id.spectateList);
+        ArrayList<Debate> arrayList = ((MainActivity )getActivity()).getSpectateDebates();
         arrayList.add(new Debate("name", "9999", 90));
         ListviewAdapter listviewAdapter = new ListviewAdapter(getContext(), arrayList);
         listView.setAdapter(listviewAdapter);
         return view;
     }
+
+    public void updateView(){
+        ArrayList<Debate> arrayList = ((MainActivity )getActivity()).getParticipateDebates();
+        ListviewAdapter listviewAdapter = new ListviewAdapter(getContext(), arrayList);
+        listView.setAdapter(listviewAdapter);
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
