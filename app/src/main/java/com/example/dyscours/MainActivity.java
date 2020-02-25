@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements fragmentSpectate.OnFragmentInteractionListener, fragmentParticipate.OnFragmentInteractionListener {
     public static final String TAG = "TagMainActivity";
     private FirebaseHelper firebaseHelper;
-    private Fragment currentFragment;
+    private DyscoursFragment currentFragment;
     private ArrayList<Debate> participateDebates;
     private ArrayList<Debate> spectateDebates;
 
@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         setSupportActionBar(toolbar);
 
         if (savedInstanceState == null) {
+            Log.d(TAG, "savedInst");
             currentFragment = new fragmentParticipate();
             loadFragment();
         }
@@ -58,8 +59,10 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
             }
         });
 
-        Intent intent = new Intent(this, ChatActivity.class);
-        startActivity(intent);
+        participateDebates = new ArrayList<Debate>();
+        spectateDebates = new ArrayList<Debate>();
+        firebaseHelper = new FirebaseHelper();
+        firebaseHelper.getAllDebates(this);
     }
 
     public boolean loadFragment(){
@@ -72,12 +75,14 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
     }
 
     public void addDebate(Debate debate){
+        Log.d(TAG, "addDebate");
         if (debate.isOpenForParticipate()){
             participateDebates.add(debate);
         }
-        else if (debate.isOpenForParticipate()){
+        else {
             spectateDebates.add(debate);
         }
+        currentFragment.updateView();
     }
 
     // TODO: FIx this
@@ -104,5 +109,41 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         else {
             return check;
         }
+    }
+
+    public static String getTAG() {
+        return TAG;
+    }
+
+    public FirebaseHelper getFirebaseHelper() {
+        return firebaseHelper;
+    }
+
+    public void setFirebaseHelper(FirebaseHelper firebaseHelper) {
+        this.firebaseHelper = firebaseHelper;
+    }
+
+    public Fragment getCurrentFragment() {
+        return currentFragment;
+    }
+
+    public void setCurrentFragment(DyscoursFragment currentFragment) {
+        this.currentFragment = currentFragment;
+    }
+
+    public ArrayList<Debate> getParticipateDebates() {
+        return participateDebates;
+    }
+
+    public void setParticipateDebates(ArrayList<Debate> participateDebates) {
+        this.participateDebates = participateDebates;
+    }
+
+    public ArrayList<Debate> getSpectateDebates() {
+        return spectateDebates;
+    }
+
+    public void setSpectateDebates(ArrayList<Debate> spectateDebates) {
+        this.spectateDebates = spectateDebates;
     }
 }

@@ -9,6 +9,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,17 +30,20 @@ import java.util.ArrayList;
  * Use the {@link fragmentParticipate#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class fragmentParticipate extends Fragment {
+public class fragmentParticipate extends DyscoursFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static final String TAG = "debugTagParticipate";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private ListView listView;
 
     public fragmentParticipate() {
         // Required empty public constructor
@@ -70,6 +74,7 @@ public class fragmentParticipate extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        Log.d(TAG, "participateOnCreate");
     }
 
     @Override
@@ -77,11 +82,8 @@ public class fragmentParticipate extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fragment_participate, container, false);
-        ListView listView = (ListView) view.findViewById(R.id.debateList);
-        FirebaseHelper firebaseHelper = new FirebaseHelper();
-        ArrayList<Debate> arrayList = new ArrayList<>();
-        // DEBUG DELETE
-        arrayList.add(new Debate("", "", 5));
+        listView = (ListView) view.findViewById(R.id.debateList);
+        ArrayList<Debate> arrayList = ((MainActivity )getActivity()).getParticipateDebates();
         ListviewAdapter listviewAdapter = new ListviewAdapter(getContext(), arrayList);
         listView.setAdapter(listviewAdapter);
         ImageButton addButton = (ImageButton) view.findViewById(R.id.addDebateButton);
@@ -92,6 +94,12 @@ public class fragmentParticipate extends Fragment {
             }
         });
         return view;
+    }
+
+    public void updateView(){
+        ArrayList<Debate> arrayList = ((MainActivity )getActivity()).getParticipateDebates();
+        ListviewAdapter listviewAdapter = new ListviewAdapter(getContext(), arrayList);
+        listView.setAdapter(listviewAdapter);
     }
 
     public void dialogBuilder(){
