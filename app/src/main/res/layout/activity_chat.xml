@@ -26,29 +26,36 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:paddingRight="10dp">
 
         <EditText
             android:id="@+id/messageEditText"
-            android:layout_width="300dp"
-            android:layout_height="50dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:maxHeight="100dp"
             android:ems="10"
-            android:inputType="text"
+            android:inputType="textCapSentences|textMultiLine"
             android:textColor="#FFFFFF"
             android:hint="Type message here..."
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
+            android:paddingTop="13dp"
+            android:paddingBottom="13dp"
             android:layout_margin="10dp"
             android:scrollbars="vertical"
+            android:scrollHorizontally="false"
             android:background="@drawable/edittext_drawable"/>
 
         <Button
             android:id="@+id/message"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:background="@drawable/ic_send"
             android:backgroundTint="@color/colorPrimary"
             android:onClick="sendMessage"
             />
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

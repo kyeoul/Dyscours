@@ -50,6 +50,7 @@ public class ChatActivity extends AppCompatActivity {
         EditText contentField = findViewById(R.id.messageEditText);
         String content = contentField.getText().toString();
         firebaseHelper.sendMessage(new Message(content));
+        contentField.setText("");
     }
 
     public FirebaseHelper getFirebaseHelper() {

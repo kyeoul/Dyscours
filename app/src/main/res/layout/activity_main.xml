@@ -6,6 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dyscours"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:tint="#90FDF8F8"/>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigationMain"
         android:layout_width="match_parent"
@@ -30,12 +38,4 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     </LinearLayout>
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/dyscours"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:tint="#90FDF8F8"/>
 </RelativeLayout>
