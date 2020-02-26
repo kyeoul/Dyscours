@@ -30,6 +30,7 @@
             android:layout_weight="1" />
 
         <Button
+            android:id="@+id/leaveButton"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
@@ -37,7 +38,8 @@
             android:layout_marginEnd="10dp"
             android:text="@string/leaveString"
             android:background="#FFFFFF"
-            android:textColor="@color/colorRed"/>
+            android:textColor="@color/colorRed"
+            android:onClick="onLeaveClick"/>
 
     </RelativeLayout>
 </androidx.appcompat.widget.Toolbar>

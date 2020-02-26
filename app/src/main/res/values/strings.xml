@@ -4,8 +4,8 @@
     <string name="productiveString">How productive was your discussion?</string>
     <string name="poorString">Poor</string>
     <string name="amazingString">Amazing</string>
-    <string name="browseString">Browse more opinions</string>
-    <string name="homeString">Back to home screen</string>
+    <string name="browseString">Back to home screen</string>
+    <string name="homeString">Start a conversation</string>
     <string name="topicPromptString">Debate topic</string>
     <string name="opinionPromptString">Opinion</string>
 
@@ -14,4 +14,6 @@
 
     <string name="toolbarDebateString">Debate Chat</string>
     <string name="leaveString">Leave</string>
+    <string name="participantOpinionString">What is your opinion on this matter?</string>
+    <string name="joinString">Join Chat</string>
 </resources>

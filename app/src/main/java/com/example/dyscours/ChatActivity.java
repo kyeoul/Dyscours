@@ -1,12 +1,15 @@
 package com.example.dyscours;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -27,6 +30,8 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarChat);
+        setSupportActionBar(toolbar);
 
         firebaseHelper = new FirebaseHelper();
         firebaseHelper.startDebate(new Debate("We need more guns.", "TESTUSERID35", 5667, 200), this);
@@ -89,5 +94,10 @@ public class ChatActivity extends AppCompatActivity {
 
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         this.layoutManager = layoutManager;
+    }
+
+    public void onLeaveClick(View v){
+        Intent intent = new Intent(this, FinishedActivity.class);
+        startActivity(intent);
     }
 }

@@ -111,7 +111,6 @@ public class fragmentParticipate extends DyscoursFragment {
             }
         }).setNegativeButton("Exit", null);
         builder.create().show();
-
     }
 
     // TODO: Rename method, update argument and hook method into UI event

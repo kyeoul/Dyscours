@@ -45,7 +45,7 @@
         android:layout_height="match_parent">
 
         <Button
-            android:id="@+id/homeButton"
+            android:id="@+id/startButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -55,13 +55,15 @@
             android:textColor="#FFFFFF"/>
 
         <Button
+            android:id="@+id/homeButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@id/homeButton"
+            app:layout_constraintBottom_toTopOf="@id/startButton"
             app:layout_constraintLeft_toLeftOf="parent"
             android:background="@color/colorPrimary"
             android:text="@string/browseString"
             android:textColor="#FFFFFF"
+            android:onClick="onHomeClick"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
