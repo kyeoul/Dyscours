@@ -29,10 +29,12 @@ public class FirebaseHelper {
     private Debate currentdebate;
     private fragmentParticipate currentParticipate;
     private fragmentSpectate currentSpectate;
+    private ChildEventListener currentChildEventListener;
 
     public FirebaseHelper() {
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         currentdebate = null;
+        currentChildEventListener = null;
     }
 
     public boolean startDebate(Debate debate, final ChatActivity chatActivity){
@@ -204,11 +206,6 @@ public class FirebaseHelper {
         return mInt.get();
     }
 
-    public void setUserRating(String userId, int rating){
-        DatabaseReference db = mFirebaseDatabaseReference.child("users").child(userId);
-        db.child("rating").setValue(rating);
-    }
-
     public void incrementUserRating(String userId, int amount){
         DatabaseReference db = mFirebaseDatabaseReference.child("users").child(userId);
         class A {
@@ -243,6 +240,8 @@ public class FirebaseHelper {
 
     public boolean getAllDebates(final MainActivity mainActivity){
         DatabaseReference db = mFirebaseDatabaseReference.child("debates");
+        if (currentChildEventListener != null)
+            db.removeEventListener(currentChildEventListener);
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -277,7 +276,7 @@ public class FirebaseHelper {
             }
         };
         db.addChildEventListener(childEventListener);
-        db.removeEventListener(childEventListener);
+        currentChildEventListener = childEventListener;
         Log.d(TAG, "startMonitor3");
         return true;
     }

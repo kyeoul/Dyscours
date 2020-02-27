@@ -37,6 +37,7 @@ public class Debate  {
         this.isOpenForParticipate = isOpenForParticipate;
     };
 
+
     public String getDebateName() {
         return debateName;
     }
