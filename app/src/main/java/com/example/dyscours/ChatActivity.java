@@ -48,7 +48,7 @@ public class ChatActivity extends AppCompatActivity {
 
     public void addMessage(Message message){
         messages.add(message);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.notifyItemInserted(messages.size() - 1);
     }
 
     public void sendMessage(View v){
