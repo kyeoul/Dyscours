@@ -28,7 +28,7 @@ public class ListviewAdapter extends BaseAdapter {
     public long getItemId(int i){return 0;}
 
     public View getView(int i, View view, ViewGroup viewGroup){
-        view = inflater.inflate(R.layout.listview_layout, null);
+        view = inflater.inflate(R.layout.recycler_topic_layout, null);
         Debate debate = debateList.get(i);
         String debateName = debate.getDebateName();
         int debateUserRating = debate.getUser1Rating();
