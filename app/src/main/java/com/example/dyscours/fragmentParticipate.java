@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -43,7 +45,7 @@ public class fragmentParticipate extends DyscoursFragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private ListView listView;
+    private RecyclerView recyclerView;
 
     public fragmentParticipate() {
         // Required empty public constructor
@@ -82,10 +84,15 @@ public class fragmentParticipate extends DyscoursFragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fragment_participate, container, false);
-        listView = (ListView) view.findViewById(R.id.debateList);
+        recyclerView = (RecyclerView) view.findViewById(R.id.debateList);
         ArrayList<Debate> arrayList = ((MainActivity )getActivity()).getParticipateDebates();
-        ListviewAdapter listviewAdapter = new ListviewAdapter(getContext(), arrayList);
-        listView.setAdapter(listviewAdapter);
+
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        RecyclerView.Adapter adapter = new TopicRecyclerAdapter(arrayList);
+        recyclerView.setAdapter(adapter);
+
         ImageButton addButton = (ImageButton) view.findViewById(R.id.addDebateButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,8 +105,11 @@ public class fragmentParticipate extends DyscoursFragment {
 
     public void updateView(){
         ArrayList<Debate> arrayList = ((MainActivity )getActivity()).getParticipateDebates();
-        ListviewAdapter listviewAdapter = new ListviewAdapter(getContext(), arrayList);
-        listView.setAdapter(listviewAdapter);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        RecyclerView.Adapter adapter = new TopicRecyclerAdapter(arrayList);
+        recyclerView.setAdapter(adapter);
     }
 
     public void dialogBuilder(){

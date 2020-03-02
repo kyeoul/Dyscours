@@ -1,6 +1,7 @@
 package com.example.dyscours;
 
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
  * Recycler view implementation greatly inspired by https://developer.android.com/guide/topics/ui/layout/recyclerview
  */
 
-public class TopicRecyclerAdapter {
+public class TopicRecyclerAdapter extends RecyclerView.Adapter<TopicRecyclerAdapter.MyViewHolder>{
     private ArrayList<Debate> debateArrayList;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -44,4 +45,6 @@ public class TopicRecyclerAdapter {
         userText.setText(debateName);
         ratingText.setText(Integer.toString(debateUserRating));
     }
+
+    public int getItemCount() { return debateArrayList.size(); }
 }

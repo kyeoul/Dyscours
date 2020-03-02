@@ -5,7 +5,10 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +37,7 @@ public class fragmentSpectate extends DyscoursFragment{
     private String mParam1;
     private String mParam2;
 
-    private ListView listView;
+    private RecyclerView recyclerView;
 
     private OnFragmentInteractionListener mListener;
 
@@ -74,18 +77,25 @@ public class fragmentSpectate extends DyscoursFragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fragment_spectate, container, false);
-        listView = (ListView) view.findViewById(R.id.spectateList);
+        recyclerView = (RecyclerView) view.findViewById(R.id.spectateList) ;
         ArrayList<Debate> arrayList = ((MainActivity )getActivity()).getSpectateDebates();
         arrayList.add(new Debate("name", "9999", 90));
-        ListviewAdapter listviewAdapter = new ListviewAdapter(getContext(), arrayList);
-        listView.setAdapter(listviewAdapter);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        RecyclerView.Adapter adapter = new TopicRecyclerAdapter(arrayList);
+        recyclerView.setAdapter(adapter);
+        Log.d("iAmHere", "I got here!");
         return view;
     }
 
     public void updateView(){
         ArrayList<Debate> arrayList = ((MainActivity )getActivity()).getParticipateDebates();
-        ListviewAdapter listviewAdapter = new ListviewAdapter(getContext(), arrayList);
-        listView.setAdapter(listviewAdapter);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(layoutManager);
+        RecyclerView.Adapter adapter = new TopicRecyclerAdapter(arrayList);
+        recyclerView.setAdapter(adapter);
     }
 
 
