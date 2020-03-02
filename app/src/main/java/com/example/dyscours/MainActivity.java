@@ -34,12 +34,6 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        if (savedInstanceState == null) {
-            Log.d(TAG, "savedInst");
-            currentFragment = new fragmentParticipate();
-            loadFragment();
-        }
-
         BottomNavigationView navView = findViewById(R.id.navigationMain);
         navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -63,6 +57,14 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         spectateDebates = new ArrayList<Debate>();
         firebaseHelper = new FirebaseHelper();
         firebaseHelper.getAllDebates(this);
+
+        if (savedInstanceState == null) {
+            Log.d(TAG, "savedInst");
+            currentFragment = new fragmentParticipate();
+            loadFragment();
+        }
+
+        startActivity(new Intent(this, ChatActivity.class));
     }
 
     public boolean loadFragment(){

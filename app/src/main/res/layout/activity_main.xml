@@ -12,7 +12,7 @@
         android:src="@drawable/dyscours"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-        android:tint="#90FDF8F8"/>
+        android:tint="#CCFFFFFF"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigationMain"

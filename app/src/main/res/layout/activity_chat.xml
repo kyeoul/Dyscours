@@ -18,8 +18,7 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarChat"
-        android:background="@color/colorWarm"/>
+        app:layout_constraintTop_toBottomOf="@id/toolbarChat" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -29,7 +28,7 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingRight="10dp"
-        android:background="@color/colorWarmer">
+        android:elevation="40dp">
 
         <EditText
             android:id="@+id/messageEditText"
@@ -41,14 +40,11 @@
             android:inputType="textCapSentences|textMultiLine"
             android:textColor="#FFFFFF"
             android:hint="Type message here..."
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:paddingTop="13dp"
             android:paddingBottom="13dp"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:scrollbars="vertical"
-            android:scrollHorizontally="false"
-            android:background="@drawable/edittext_drawable"/>
+            android:scrollHorizontally="false" />
 
         <Button
             android:id="@+id/message"
