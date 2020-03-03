@@ -56,15 +56,13 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         participateDebates = new ArrayList<Debate>();
         spectateDebates = new ArrayList<Debate>();
         firebaseHelper = new FirebaseHelper();
-        firebaseHelper.getAllDebates(this);
+        firebaseHelper.initDebateListener(this);
 
         if (savedInstanceState == null) {
             Log.d(TAG, "savedInst");
             currentFragment = new fragmentParticipate();
             loadFragment();
         }
-
-        startActivity(new Intent(this, ChatActivity.class));
     }
 
     public boolean loadFragment(){
@@ -80,7 +78,7 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         currentFragment.updateView();
         participateDebates.clear();
         spectateDebates.clear();
-        firebaseHelper.getAllDebates(this);
+        firebaseHelper.initDebateListener(this);
     }
 
     public void addDebate(Debate debate){
@@ -91,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         else {
             spectateDebates.add(debate);
         }
+        currentFragment.updateView();
     }
 
     // TODO: FIx this

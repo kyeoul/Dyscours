@@ -4,9 +4,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -86,7 +89,7 @@ public class fragmentParticipate extends DyscoursFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_fragment_participate, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.debateList);
-        ArrayList<Debate> arrayList = ((MainActivity )getActivity()).getParticipateDebates();
+        final ArrayList<Debate> arrayList = ((MainActivity )getActivity()).getParticipateDebates();
 
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -94,6 +97,28 @@ public class fragmentParticipate extends DyscoursFragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         RecyclerView.Adapter adapter = new TopicRecyclerAdapter(arrayList);
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                if (child != null){
+                    int index = rv.getChildAdapterPosition(child);
+                    FirebaseHelper firebaseHelper = ((MainActivity) getActivity()).getFirebaseHelper();
+                    Intent intent = new Intent();
+                    // TODO : make debate serializeable so that it can be correctly passed to chat Activity
+                }
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+            }
+        });
 
         ImageButton addButton = (ImageButton) view.findViewById(R.id.addDebateButton);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -106,12 +131,7 @@ public class fragmentParticipate extends DyscoursFragment {
     }
 
     public void updateView(){
-        ArrayList<Debate> arrayList = ((MainActivity )getActivity()).getParticipateDebates();
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        RecyclerView.Adapter adapter = new TopicRecyclerAdapter(arrayList);
-        recyclerView.setAdapter(adapter);
+        recyclerView.getAdapter().notifyDataSetChanged();
     }
 
     public void dialogBuilder(){

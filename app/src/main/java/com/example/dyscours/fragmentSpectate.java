@@ -92,12 +92,7 @@ public class fragmentSpectate extends DyscoursFragment{
     }
 
     public void updateView(){
-        ArrayList<Debate> arrayList = ((MainActivity )getActivity()).getParticipateDebates();
-        recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        RecyclerView.Adapter adapter = new TopicRecyclerAdapter(arrayList);
-        recyclerView.setAdapter(adapter);
+        recyclerView.getAdapter().notifyDataSetChanged();
     }
 
 

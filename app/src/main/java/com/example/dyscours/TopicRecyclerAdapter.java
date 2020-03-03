@@ -30,6 +30,13 @@ public class TopicRecyclerAdapter extends RecyclerView.Adapter<TopicRecyclerAdap
         this.debateArrayList = debateArrayList;
     }
 
+    /**
+     *
+     * Onclick provided by https://stackoverflow.com/questions/24471109/recyclerview-onclick
+     * @param parent
+     * @param viewType
+     * @return
+     */
     public TopicRecyclerAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewGroup v = (ViewGroup) LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_topic_layout, parent, false);
         MyViewHolder vh = new MyViewHolder(v);

@@ -26,6 +26,10 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Message> messages;
 
+    public static final int JOIN = 2;
+    public static final int START = 1;
+    public static final int SPECTATE = 3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
