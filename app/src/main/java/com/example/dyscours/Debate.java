@@ -13,6 +13,8 @@ public class Debate  {
     private String key;
     private int user1Rating;
     private int user2Rating;
+    private int debateRatingUser1;
+    private int debateRatingUser2;
     private boolean isOpenForParticipate;
 
 
@@ -21,12 +23,16 @@ public class Debate  {
         this.userId = userId;
         this.timeLimit = timeLimit;
         this.isOpenForParticipate = true;
+        debateRatingUser1 = -1;
+        debateRatingUser2 = -1;
     }
 
     public Debate (String userId, String key, int user2Rating){
         this.userId = userId;
         this.key = key;
         this.isOpenForParticipate = false;
+        debateRatingUser1 = -1;
+        debateRatingUser2 = -1;
     }
 
     public Debate(String key, String debateName, int user1Rating, int timeLimit, boolean isOpenForParticipate){
@@ -35,6 +41,8 @@ public class Debate  {
         this.timeLimit = timeLimit;
         this.debateName = debateName;
         this.isOpenForParticipate = isOpenForParticipate;
+        debateRatingUser1 = -1;
+        debateRatingUser2 = -1;
     };
 
 
@@ -108,5 +116,21 @@ public class Debate  {
 
     public void setOpenForParticipate(boolean openForParticipate) {
         isOpenForParticipate = openForParticipate;
+    }
+
+    public int getDebateRatingUser1() {
+        return debateRatingUser1;
+    }
+
+    public void setDebateRatingUser1(int debateRatingUser1) {
+        this.debateRatingUser1 = debateRatingUser1;
+    }
+
+    public int getDebateRatingUser2() {
+        return debateRatingUser2;
+    }
+
+    public void setDebateRatingUser2(int debateRatingUser2) {
+        this.debateRatingUser2 = debateRatingUser2;
     }
 }

@@ -49,6 +49,8 @@ public class FirebaseHelper {
         newData.put("timeLimit", debate.getTimeLimit());
         newData.put("user1Rating", debate.getUser1Rating());
         newData.put("isOpenForParticipate", true);
+        newData.put("debateRatingUser1", -1);
+        newData.put("debateRatingUser2", -1);
         db.child(key).setValue(newData);
         debate.setKey(key);
         debate.setUser1(true);
@@ -192,7 +194,7 @@ public class FirebaseHelper {
         }
 
         final A mInt = new A(-1);
-        db.addListenerForSingleValueEvent(new ValueEventListener() {
+        db.child("score").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mInt.set(((Long) dataSnapshot.child("rating").getValue()).intValue());
@@ -206,28 +208,30 @@ public class FirebaseHelper {
         return mInt.get();
     }
 
-    public void incrementUserRating(String userId, int amount){
-        DatabaseReference db = mFirebaseDatabaseReference.child("users").child(userId);
-        class A {
-            private int m;
-            A(int m){
-                this.m = m;
-            }
-
-            public int get(){
-                return m;
-            }
-
-            public void set(int m) {
-                this.m = m;
-            }
-        }
-
-        final A mInt = new A(-1);
-        db.addListenerForSingleValueEvent(new ValueEventListener() {
+    public void rateDebate(final int rating){
+        DatabaseReference db = mFirebaseDatabaseReference.child("debates").child(currentdebate.getKey());
+        db.child("debateRatingUser" + (currentdebate.isUser1() ? 1 : 2)).setValue(rating);
+        final Debate finalCurrentDebate = currentdebate;
+        db.child("debateRatingUser" + (currentdebate.isUser1() ? 2 : 1)).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mInt.set(((Long) dataSnapshot.child("rating").getValue()).intValue());
+                int user1Rating = rating;
+                int user2Rating = ((Long) dataSnapshot.getValue()).intValue();
+                final DatabaseReference dbN = mFirebaseDatabaseReference.child("users").child(finalCurrentDebate.getUserId());
+                final int averageRating = (user1Rating + user2Rating)/2;
+                dbN.child("ratingHistory").child(finalCurrentDebate.getKey()).setValue(averageRating);
+                dbN.child("score").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        int oldScore = ((Long) dataSnapshot.getValue()).intValue();
+                        dbN.child("score").setValue(oldScore + averageRating);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
 
             @Override
@@ -235,10 +239,11 @@ public class FirebaseHelper {
 
             }
         });
-        db.child("rating").setValue(mInt.get() + amount);
     }
 
-    public boolean getAllDebates(final MainActivity mainActivity){
+    public boolean initDebateListener(final MainActivity mainActivity){
+        if (mainActivity.isDestroyed())
+            return false;
         DatabaseReference db = mFirebaseDatabaseReference.child("debates");
         if (currentChildEventListener != null)
             db.removeEventListener(currentChildEventListener);
