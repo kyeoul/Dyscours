@@ -15,45 +15,67 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintBottom_toTopOf="@+id/relativeLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbarChat" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
         android:paddingRight="10dp"
-        android:elevation="40dp">
+        android:paddingLeft="10dp">
 
-        <EditText
-            android:id="@+id/messageEditText"
-            android:layout_width="0dp"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:maxHeight="100dp"
-            android:ems="10"
-            android:inputType="textCapSentences|textMultiLine"
-            android:textColor="#FFFFFF"
-            android:hint="Type message here..."
-            android:paddingTop="13dp"
-            android:paddingBottom="13dp"
-            android:layout_margin="5dp"
-            android:scrollbars="vertical"
-            android:scrollHorizontally="false" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:cardCornerRadius="30dp"
+            app:cardElevation="10dp"
+            android:layout_marginBottom="30dp">
 
-        <Button
-            android:id="@+id/message"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:background="@drawable/ic_send"
-            android:backgroundTint="@color/colorPrimary"
-            android:onClick="sendMessage"
-            />
-    </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingEnd="10dp"
+                android:paddingStart="20dp"
+                android:background="@drawable/gradient_chat">
+
+                <EditText
+                    android:id="@+id/messageEditText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxHeight="100dp"
+                    android:ems="10"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:textColor="#FFFFFF"
+                    android:hint="Type message here..."
+                    android:paddingTop="13dp"
+                    android:paddingBottom="13dp"
+                    android:layout_margin="5dp"
+                    android:scrollbars="vertical"
+                    android:scrollHorizontally="false"
+                    android:background="@android:color/transparent"/>
+
+                <Button
+                    android:id="@+id/message"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_send"
+                    android:backgroundTint="#FFFFFF"
+                    android:onClick="sendMessage"
+                    />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

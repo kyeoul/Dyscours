@@ -16,4 +16,5 @@
     <string name="leaveString">Leave</string>
     <string name="participantOpinionString">What is your opinion on this matter?</string>
     <string name="joinString">Join Chat</string>
+    <string name="messageString">Type message here...</string>
 </resources>
