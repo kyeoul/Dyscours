@@ -35,6 +35,7 @@ public class FirebaseHelper {
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         currentdebate = null;
         currentChildEventListener = null;
+
     }
 
     public boolean startDebate(Debate debate, final ChatActivity chatActivity){
@@ -284,5 +285,9 @@ public class FirebaseHelper {
         currentChildEventListener = childEventListener;
         Log.d(TAG, "startMonitor3");
         return true;
+    }
+
+    public String getUserId(){
+        return "TESTUID498476376";
     }
 }

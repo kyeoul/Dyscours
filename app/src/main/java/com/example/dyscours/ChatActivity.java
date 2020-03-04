@@ -30,6 +30,10 @@ public class ChatActivity extends AppCompatActivity {
     public static final int START = 1;
     public static final int SPECTATE = 3;
 
+    public static final String DEBATE_VALUE = "debateValue";
+    public static final String IS_PARTICIPATE = "isParticipate";
+    public static final String IS_USER_1 = "isUser1";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +42,17 @@ public class ChatActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         firebaseHelper = new FirebaseHelper();
-        firebaseHelper.startDebate(new Debate("We need more guns.", "TESTUSERID35", 5667, 200), this);
+        Bundle intentExtras = getIntent().getExtras();
+        Debate debate = (Debate) intentExtras.getSerializable(DEBATE_VALUE);
+        boolean isParticipate = intentExtras.getBoolean(IS_PARTICIPATE);
+        boolean isUser1 = intentExtras.getBoolean(IS_USER_1);
+
+        if (isParticipate && !isUser1){
+            debate.setUser1(false);
+            debate.setUserId(firebaseHelper.getUserId());
+            Log.d(TAG, "chatJoin");
+            firebaseHelper.joinDebate(debate, this);
+        }
 
         messages = new ArrayList<Message>();
 

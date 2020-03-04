@@ -3,7 +3,9 @@ package com.example.dyscours;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Debate  {
+import java.io.Serializable;
+
+public class Debate implements Serializable {
 
     private String debateName;
     private String userId;
@@ -17,8 +19,13 @@ public class Debate  {
     private int debateRatingUser2;
     private boolean isOpenForParticipate;
 
-
-    public Debate(String debateName, String userId, int timeLimit, int user1Rating){
+    /**
+     * starting a debate
+     * @param debateName
+     * @param timeLimit
+     * @param user1Rating
+     */
+    public Debate(String debateName, int timeLimit, int user1Rating){
         this.debateName = debateName;
         this.userId = userId;
         this.timeLimit = timeLimit;
@@ -27,7 +34,12 @@ public class Debate  {
         debateRatingUser2 = -1;
     }
 
-    public Debate (String userId, String key, int user2Rating){
+    /**
+     * joining a debate
+     * @param key
+     * @param user2Rating
+     */
+    public Debate (String key, int user2Rating){
         this.userId = userId;
         this.key = key;
         this.isOpenForParticipate = false;
@@ -35,6 +47,14 @@ public class Debate  {
         debateRatingUser2 = -1;
     }
 
+    /**
+     * looking at a debate from the home screen
+     * @param key
+     * @param debateName
+     * @param user1Rating
+     * @param timeLimit
+     * @param isOpenForParticipate
+     */
     public Debate(String key, String debateName, int user1Rating, int timeLimit, boolean isOpenForParticipate){
         this.key = key;
         this.user1Rating = user1Rating;
@@ -132,5 +152,9 @@ public class Debate  {
 
     public void setDebateRatingUser2(int debateRatingUser2) {
         this.debateRatingUser2 = debateRatingUser2;
+    }
+
+    public String toString(){
+        return getKey() + getDebateName() + getUserId();
     }
 }
