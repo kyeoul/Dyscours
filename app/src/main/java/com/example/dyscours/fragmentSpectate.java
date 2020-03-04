@@ -1,9 +1,11 @@
 package com.example.dyscours;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
@@ -33,6 +36,7 @@ public class fragmentSpectate extends DyscoursFragment{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public static final String TAG = "debugTagSpectate";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -41,6 +45,8 @@ public class fragmentSpectate extends DyscoursFragment{
     private RecyclerView recyclerView;
 
     private OnFragmentInteractionListener mListener;
+
+    private boolean allowTouch;
 
     public fragmentSpectate() {
         // Required empty public constructor
@@ -80,13 +86,46 @@ public class fragmentSpectate extends DyscoursFragment{
         View view = inflater.inflate(R.layout.fragment_fragment_spectate, container, false);
         recyclerView = (RecyclerView) view.findViewById(R.id.spectateList) ;
         ArrayList<Debate> arrayList = ((MainActivity )getActivity()).getSpectateDebates();
-        arrayList.add(new Debate("name", "9999", 90));
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         RecyclerView.Adapter adapter = new TopicRecyclerAdapter(arrayList);
         recyclerView.setAdapter(adapter);
+        final DyscoursFragment finalThis = this;
+        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
+            @Override
+            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                Log.d(TAG, "onInterceptTouchEvent");
+                if (!allowTouch)
+                    return false;
+                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                if (child != null) {
+                    int index = rv.getChildAdapterPosition(child);
+                    FirebaseHelper firebaseHelper = ((MainActivity) getActivity()).getFirebaseHelper();
+                    // https://stackoverflow.com/questions/14333449/passing-data-through-intent-using-serializable
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(ChatActivity.DEBATE_VALUE, ((MainActivity) getActivity()).getParticipateDebates().get(index));
+                    bundle.putBoolean(ChatActivity.IS_PARTICIPATE, false);
+                    bundle.putBoolean(ChatActivity.IS_USER_1, false);
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                    intent.putExtras(bundle);
+                    finalThis.setAllowTouch(false);
+                    startActivity(intent);
+                }
+                return false;
+            }
+
+            @Override
+            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                Log.d(TAG, "touchParticipate");
+            }
+
+            @Override
+            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+                Log.d(TAG, "onRequestDisallowInterceptTouchEvent");
+            }
+        });
         Log.d("iAmHere", "I got here!");
         return view;
     }
@@ -133,5 +172,59 @@ public class fragmentSpectate extends DyscoursFragment{
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public static String getArgParam1() {
+        return ARG_PARAM1;
+    }
+
+    public static String getArgParam2() {
+        return ARG_PARAM2;
+    }
+
+    public static String getTAG() {
+        return TAG;
+    }
+
+    public String getmParam1() {
+        return mParam1;
+    }
+
+    public void setmParam1(String mParam1) {
+        this.mParam1 = mParam1;
+    }
+
+    public String getmParam2() {
+        return mParam2;
+    }
+
+    public void setmParam2(String mParam2) {
+        this.mParam2 = mParam2;
+    }
+
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
+    }
+
+    public void setRecyclerView(RecyclerView recyclerView) {
+        this.recyclerView = recyclerView;
+    }
+
+    public OnFragmentInteractionListener getmListener() {
+        return mListener;
+    }
+
+    public void setmListener(OnFragmentInteractionListener mListener) {
+        this.mListener = mListener;
+    }
+
+    @Override
+    public boolean isAllowTouch() {
+        return allowTouch;
+    }
+
+    @Override
+    public void setAllowTouch(boolean allowTouch) {
+        this.allowTouch = allowTouch;
     }
 }

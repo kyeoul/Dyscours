@@ -51,6 +51,8 @@ public class fragmentParticipate extends DyscoursFragment {
 
     private RecyclerView recyclerView;
 
+    private boolean allowTouch;
+
     public fragmentParticipate() {
         // Required empty public constructor
     }
@@ -84,6 +86,12 @@ public class fragmentParticipate extends DyscoursFragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        allowTouch = true;
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -97,26 +105,38 @@ public class fragmentParticipate extends DyscoursFragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         RecyclerView.Adapter adapter = new TopicRecyclerAdapter(arrayList);
         recyclerView.setAdapter(adapter);
+        final DyscoursFragment finalThis = this;
         recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
             @Override
             public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+                Log.d(TAG, "onInterceptTouchEvent");
+                if (!allowTouch)
+                    return false;
+                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                if (child != null) {
+                    int index = rv.getChildAdapterPosition(child);
+                    FirebaseHelper firebaseHelper = ((MainActivity) getActivity()).getFirebaseHelper();
+                    // https://stackoverflow.com/questions/14333449/passing-data-through-intent-using-serializable
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(ChatActivity.DEBATE_VALUE, ((MainActivity) getActivity()).getParticipateDebates().get(index));
+                    bundle.putBoolean(ChatActivity.IS_PARTICIPATE, true);
+                    bundle.putBoolean(ChatActivity.IS_USER_1, false);
+                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                    intent.putExtras(bundle);
+                    finalThis.setAllowTouch(false);
+                    startActivity(intent);
+                }
                 return false;
             }
 
             @Override
             public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                if (child != null){
-                    int index = rv.getChildAdapterPosition(child);
-                    FirebaseHelper firebaseHelper = ((MainActivity) getActivity()).getFirebaseHelper();
-                    Intent intent = new Intent();
-                    // TODO : make debate serializeable so that it can be correctly passed to chat Activity
-                }
+                Log.d(TAG, "touchParticipate");
             }
 
             @Override
             public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-
+                Log.d(TAG, "onRequestDisallowInterceptTouchEvent");
             }
         });
 
@@ -169,6 +189,8 @@ public class fragmentParticipate extends DyscoursFragment {
         mListener = null;
     }
 
+
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -184,5 +206,55 @@ public class fragmentParticipate extends DyscoursFragment {
         void onFragmentInteraction(Uri uri);
     }
 
+    public static String getArgParam1() {
+        return ARG_PARAM1;
+    }
 
+    public static String getArgParam2() {
+        return ARG_PARAM2;
+    }
+
+    public static String getTAG() {
+        return TAG;
+    }
+
+    public String getmParam1() {
+        return mParam1;
+    }
+
+    public void setmParam1(String mParam1) {
+        this.mParam1 = mParam1;
+    }
+
+    public String getmParam2() {
+        return mParam2;
+    }
+
+    public void setmParam2(String mParam2) {
+        this.mParam2 = mParam2;
+    }
+
+    public OnFragmentInteractionListener getmListener() {
+        return mListener;
+    }
+
+    public void setmListener(OnFragmentInteractionListener mListener) {
+        this.mListener = mListener;
+    }
+
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
+    }
+
+    public void setRecyclerView(RecyclerView recyclerView) {
+        this.recyclerView = recyclerView;
+    }
+
+    public boolean isAllowTouch() {
+        return allowTouch;
+    }
+
+    public void setAllowTouch(boolean allowTouch) {
+        this.allowTouch = allowTouch;
+    }
 }
