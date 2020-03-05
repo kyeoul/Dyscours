@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -156,10 +157,24 @@ public class fragmentParticipate extends DyscoursFragment {
 
     public void dialogBuilder(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Creating a debate").setView(R.layout.dialog_add_debate).setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        final DyscoursFragment finalThis = this;
+        final View finalView = finalThis.getActivity().getLayoutInflater().inflate(R.layout.dialog_add_debate, null);
+        builder.setTitle("Creating a debate").setView(finalView).setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                EditText opinionEditText = finalView.findViewById(R.id.opinionEditText);
+                String debateName = opinionEditText.getText().toString();
+                if (debateName == null || debateName.isEmpty()){
+                    return;
+                }
+                Debate debate = new Debate(opinionEditText.getText().toString(), 600);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ChatActivity.DEBATE_VALUE, debate);
+                bundle.putBoolean(ChatActivity.IS_PARTICIPATE, true);
+                bundle.putBoolean(ChatActivity.IS_USER_1, true);
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         }).setNegativeButton("Exit", null);
         builder.create().show();

@@ -25,9 +25,9 @@ public class Debate implements Serializable {
      * @param timeLimit
      * @param user1Rating
      */
-    public Debate(String debateName, int timeLimit, int user1Rating){
+    public Debate(String debateName, int timeLimit){
         this.debateName = debateName;
-        this.userId = userId;
+        this.userId = null;
         this.timeLimit = timeLimit;
         this.isOpenForParticipate = true;
         debateRatingUser1 = -1;
@@ -39,8 +39,8 @@ public class Debate implements Serializable {
      * @param key
      * @param user2Rating
      */
-    public Debate (String key, int user2Rating){
-        this.userId = userId;
+    public Debate (String key){
+        this.userId = null;
         this.key = key;
         this.isOpenForParticipate = false;
         debateRatingUser1 = -1;

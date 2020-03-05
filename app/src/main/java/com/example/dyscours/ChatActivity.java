@@ -48,10 +48,13 @@ public class ChatActivity extends AppCompatActivity {
         boolean isUser1 = intentExtras.getBoolean(IS_USER_1);
 
         if (isParticipate && !isUser1){
-            debate.setUser1(false);
-            debate.setUserId(firebaseHelper.getUserId());
             Log.d(TAG, "chatJoin");
             firebaseHelper.joinDebate(debate, this);
+        }
+        if (isParticipate && isUser1){
+            Log.d(TAG, "chatStart");
+            Log.d(TAG, debate.toString());
+            firebaseHelper.startDebate(debate, this);
         }
 
         messages = new ArrayList<Message>();
