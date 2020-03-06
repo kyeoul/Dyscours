@@ -41,7 +41,7 @@ public class ChatActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarChat);
         setSupportActionBar(toolbar);
 
-        firebaseHelper = new FirebaseHelper();
+        firebaseHelper = FirebaseHelper.getInstance();
         Bundle intentExtras = getIntent().getExtras();
         Debate debate = (Debate) intentExtras.getSerializable(DEBATE_VALUE);
         boolean isParticipate = intentExtras.getBoolean(IS_PARTICIPATE);
@@ -55,6 +55,11 @@ public class ChatActivity extends AppCompatActivity {
             Log.d(TAG, "chatStart");
             Log.d(TAG, debate.toString());
             firebaseHelper.startDebate(debate, this);
+        }
+        if (!isParticipate){
+            // TO DO: FINISH PARTICIPATE
+            Log.d(TAG, "participateStart");
+            firebaseHelper.spectateDebate(debate, this);
         }
 
         messages = new ArrayList<Message>();
@@ -118,7 +123,17 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void onLeaveClick(View v){
+        finish();
+    }
+
+    public void wrapUp(){
         Intent intent = new Intent(this, FinishedActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onStop() {
+        wrapUp();
+        super.onStop();
     }
 }

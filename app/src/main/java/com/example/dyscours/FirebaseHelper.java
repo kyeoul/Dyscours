@@ -30,12 +30,19 @@ public class FirebaseHelper {
     private fragmentParticipate currentParticipate;
     private fragmentSpectate currentSpectate;
     private ChildEventListener currentChildEventListener;
+    private static FirebaseHelper currentInstance;
 
     public FirebaseHelper() {
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         currentdebate = null;
         currentChildEventListener = null;
+    }
 
+    public static FirebaseHelper getInstance(){
+        if (currentInstance  == null){
+            currentInstance = new FirebaseHelper();
+        }
+        return currentInstance;
     }
 
     public boolean startDebate(Debate debate, final ChatActivity chatActivity){
@@ -55,6 +62,7 @@ public class FirebaseHelper {
         newData.put("isOpenForParticipate", true);
         newData.put("debateRatingUser1", -1);
         newData.put("debateRatingUser2", -1);
+        newData.put("isClosed", false);
         db.child(key).setValue(newData);
         debate.setKey(key);
         currentdebate = debate;
@@ -148,7 +156,71 @@ public class FirebaseHelper {
         return true;
     }
 
-    public void endDebate(){
+    /**
+     * TODO: implement this
+     * @param debate
+     * @param chatActivity
+     * @return
+     */
+    public boolean spectateDebate(final Debate debate, final ChatActivity chatActivity){
+        if (debate.getKey() == null){
+            return false;
+        }
+        debate.setUser1(false);
+        DatabaseReference db = mFirebaseDatabaseReference.child("debates");
+        String key = debate.getKey();
+        currentdebate = debate;
+        db.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                debate.setDebateName((String) dataSnapshot.child("debateName").getValue());
+                debate.setTimeLimit((int) ((long) dataSnapshot.child("timeLimit").getValue()));
+                debate.setUser1Rating((int) ((long) dataSnapshot.child("user1Rating").getValue()));
+                Log.d(TAG, debate.getDebateName());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        db.child(key).child("messages").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                Message message = dataSnapshot.getValue(Message.class);
+                Log.d(TAG, message.getContent());
+                chatActivity.addMessage(message);
+                Log.d(TAG, "onChildAddedB");
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        return true;
+    }
+
+    public void stopDebate(){
+
+    }
+
+    public void closeDebate(){
         currentdebate = null;
     }
 
