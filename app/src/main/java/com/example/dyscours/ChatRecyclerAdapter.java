@@ -60,7 +60,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
             contentTextView.setBackground(chatActivity.getResources().getDrawable(R.drawable.the_chat_bubble));
         }
         else {
-            contentTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+            contentTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
             contentTextView.setBackground(chatActivity.getResources().getDrawable(R.drawable.that_chat_bubble));
         }
     }

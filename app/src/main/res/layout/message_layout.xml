@@ -14,6 +14,6 @@
         android:text="@string/fillerString"
         android:textColor="#000000"
         android:textSize="@dimen/mediumSmallText"
-        android:layout_marginStart="10dp"
+        android:layout_margin="20dp"
         android:layout_marginTop="@dimen/generalPadding"/>
 </LinearLayout>

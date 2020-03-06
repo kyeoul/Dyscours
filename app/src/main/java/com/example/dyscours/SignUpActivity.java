@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,6 +75,21 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View v){
                 Intent i = new Intent(SignUpActivity.this, LoginActivity.class);
                 startActivity(i);
+            }
+        });
+
+        ImageView imageView = (ImageView) findViewById(R.id.signInImage);
+        final TransitionDrawable loginBackground = (TransitionDrawable) imageView.getDrawable();
+
+        emailId.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus){
+                if(hasFocus){
+                    loginBackground.startTransition(300);
+                }
+                else{
+                    loginBackground.reverseTransition(300);
+                }
             }
         });
 

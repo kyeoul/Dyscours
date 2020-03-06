@@ -7,11 +7,11 @@
     tools:context=".MainActivity">
 
     <ImageView
+        android:id="@+id/imageLowPoly"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/lowpoly_start"
-        android:scaleType="centerCrop"
-        android:foreground="@color/colorPrimaryOpaque"/>
+        android:src="@drawable/transition_background"
+        android:scaleType="centerCrop" />
 
     <EditText
         android:id="@+id/editText"
@@ -31,7 +31,9 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        android:drawableLeft="@drawable/ic_user"
+        android:drawablePadding="10dp"/>
 
     <EditText
         android:id="@+id/editText2"
@@ -49,7 +51,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/editText"
+        android:drawableLeft="@drawable/ic_password"
+        android:drawablePadding="10dp"
+        android:theme="@style/EditTextTheme"/>
 
 
     <androidx.cardview.widget.CardView
