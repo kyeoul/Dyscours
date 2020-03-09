@@ -14,9 +14,14 @@
         android:scaleType="centerCrop" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/dyscours" />
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:src="@drawable/dyscours"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="40dp"
+        />
 
     <EditText
         android:id="@+id/editText"
@@ -31,7 +36,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
 
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="100dp"
 
         android:drawableLeft="@drawable/ic_user"
         android:drawablePadding="10dp"/>
