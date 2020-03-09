@@ -34,6 +34,8 @@ public class ChatActivity extends AppCompatActivity {
     public static final String IS_PARTICIPATE = "isParticipate";
     public static final String IS_USER_1 = "isUser1";
 
+    private boolean isParticipate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +46,7 @@ public class ChatActivity extends AppCompatActivity {
         firebaseHelper = FirebaseHelper.getInstance();
         Bundle intentExtras = getIntent().getExtras();
         Debate debate = (Debate) intentExtras.getSerializable(DEBATE_VALUE);
-        boolean isParticipate = intentExtras.getBoolean(IS_PARTICIPATE);
+        isParticipate = intentExtras.getBoolean(IS_PARTICIPATE);
         boolean isUser1 = intentExtras.getBoolean(IS_USER_1);
 
         if (isParticipate && !isUser1){
@@ -59,6 +61,7 @@ public class ChatActivity extends AppCompatActivity {
         if (!isParticipate){
             // TO DO: FINISH PARTICIPATE
             Log.d(TAG, "participateStart");
+            findViewById(R.id.relativeLayout).setVisibility(View.INVISIBLE);
             firebaseHelper.spectateDebate(debate, this);
         }
 
@@ -70,6 +73,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new ChatRecyclerAdapter(messages, this);
         recyclerView.setAdapter(mAdapter);
+
     }
 
     public void addMessage(Message message){
@@ -127,8 +131,10 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void wrapUp(){
-        Intent intent = new Intent(this, FinishedActivity.class);
-        startActivity(intent);
+        if (isParticipate) {
+            Intent intent = new Intent(this, FinishedActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
