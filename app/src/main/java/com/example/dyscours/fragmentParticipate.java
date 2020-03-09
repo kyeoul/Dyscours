@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -50,8 +51,6 @@ public class fragmentParticipate extends DyscoursFragment {
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView recyclerView;
-
-    private boolean allowTouch;
 
     public fragmentParticipate() {
         // Required empty public constructor
@@ -88,7 +87,6 @@ public class fragmentParticipate extends DyscoursFragment {
     @Override
     public void onResume() {
         super.onResume();
-        allowTouch = true;
     }
 
     @Override
@@ -103,42 +101,8 @@ public class fragmentParticipate extends DyscoursFragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        RecyclerView.Adapter adapter = new TopicRecyclerAdapter(arrayList);
+        RecyclerView.Adapter adapter = new TopicRecyclerAdapter(arrayList, this, (MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
-        final DyscoursFragment finalThis = this;
-        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-                Log.d(TAG, "onInterceptTouchEvent");
-                if (!allowTouch)
-                    return false;
-                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                if (child != null) {
-                    int index = rv.getChildAdapterPosition(child);
-                    FirebaseHelper firebaseHelper = ((MainActivity) getActivity()).getFirebaseHelper();
-                    // https://stackoverflow.com/questions/14333449/passing-data-through-intent-using-serializable
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(ChatActivity.DEBATE_VALUE, ((MainActivity) getActivity()).getParticipateDebates().get(index));
-                    bundle.putBoolean(ChatActivity.IS_PARTICIPATE, true);
-                    bundle.putBoolean(ChatActivity.IS_USER_1, false);
-                    Intent intent = new Intent(getActivity(), ChatActivity.class);
-                    intent.putExtras(bundle);
-                    finalThis.setAllowTouch(false);
-                    startActivity(intent);
-                }
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-                Log.d(TAG, "touchParticipate");
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-                Log.d(TAG, "onRequestDisallowInterceptTouchEvent");
-            }
-        });
 
         ImageButton addButton = (ImageButton) view.findViewById(R.id.addDebateButton);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -156,10 +120,24 @@ public class fragmentParticipate extends DyscoursFragment {
 
     public void dialogBuilder(){
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Creating a debate").setView(R.layout.dialog_add_debate).setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        final DyscoursFragment finalThis = this;
+        final View finalView = finalThis.getActivity().getLayoutInflater().inflate(R.layout.dialog_add_debate, null);
+        builder.setTitle("Creating a debate").setView(finalView).setPositiveButton("Add", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                EditText opinionEditText = finalView.findViewById(R.id.opinionEditText);
+                String debateName = opinionEditText.getText().toString();
+                if (debateName == null || debateName.isEmpty()){
+                    return;
+                }
+                Debate debate = new Debate(opinionEditText.getText().toString(), 600);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ChatActivity.DEBATE_VALUE, debate);
+                bundle.putBoolean(ChatActivity.IS_PARTICIPATE, true);
+                bundle.putBoolean(ChatActivity.IS_USER_1, true);
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         }).setNegativeButton("Exit", null);
         builder.create().show();
@@ -250,11 +228,4 @@ public class fragmentParticipate extends DyscoursFragment {
         this.recyclerView = recyclerView;
     }
 
-    public boolean isAllowTouch() {
-        return allowTouch;
-    }
-
-    public void setAllowTouch(boolean allowTouch) {
-        this.allowTouch = allowTouch;
-    }
 }

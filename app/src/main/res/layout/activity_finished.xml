@@ -16,13 +16,13 @@
         android:textSize="20sp"/>
 
     <SeekBar
-        android:id="@+id/seekBar"
+        android:id="@+id/seekBarRating"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="275dp"
-        android:max="150"
-        android:progress="10"
+        android:max="100"
+        android:progress="50"
         />
 
     <TextView

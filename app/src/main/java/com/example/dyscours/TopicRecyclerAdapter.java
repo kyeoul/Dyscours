@@ -1,5 +1,7 @@
 package com.example.dyscours;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +20,9 @@ import java.util.ArrayList;
 public class TopicRecyclerAdapter extends RecyclerView.Adapter<TopicRecyclerAdapter.MyViewHolder>{
     private ArrayList<Debate> debateArrayList;
 
+    private MainActivity mainActivity;
+    private DyscoursFragment fragment;
+
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         public ViewGroup viewGroup;
         public MyViewHolder(ViewGroup v){
@@ -26,8 +31,10 @@ public class TopicRecyclerAdapter extends RecyclerView.Adapter<TopicRecyclerAdap
         }
     }
 
-    public TopicRecyclerAdapter(ArrayList<Debate> debateArrayList){
+    public TopicRecyclerAdapter(ArrayList<Debate> debateArrayList, DyscoursFragment fragment, MainActivity mainActivity){
         this.debateArrayList = debateArrayList;
+        this.fragment = fragment;
+        this.mainActivity = mainActivity;
     }
 
     /**
@@ -43,14 +50,33 @@ public class TopicRecyclerAdapter extends RecyclerView.Adapter<TopicRecyclerAdap
         return vh;
     }
 
+    /**
+     * https://medium.com/@filswino/setting-onclicklistener-in-recyclerview-android-e6e198f5f0e2
+     * @param holder
+     * @param position
+     */
     public void onBindViewHolder(MyViewHolder holder, int position){
         TextView userText = holder.viewGroup.findViewById(R.id.debateName);
         TextView ratingText = holder.viewGroup.findViewById(R.id.debateUserRating);
-        Debate debate = debateArrayList.get(position);
+        final Debate debate = debateArrayList.get(position);
         String debateName = debate.getDebateName();
         int debateUserRating = debate.getUser1Rating();
         userText.setText(debateName);
         ratingText.setText(Integer.toString(debateUserRating));
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseHelper firebaseHelper = mainActivity.getFirebaseHelper();
+                // https://stackoverflow.com/questions/14333449/passing-data-through-intent-using-serializable
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ChatActivity.DEBATE_VALUE, debate);
+                bundle.putBoolean(ChatActivity.IS_PARTICIPATE, debate.isOpenForParticipate());
+                bundle.putBoolean(ChatActivity.IS_USER_1, debate.isUser1());
+                Intent intent = new Intent(mainActivity, ChatActivity.class);
+                intent.putExtras(bundle);
+                mainActivity.startActivity(intent);
+            }
+        });
     }
 
     public int getItemCount() { return debateArrayList.size(); }

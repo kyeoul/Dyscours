@@ -34,6 +34,8 @@ public class ChatActivity extends AppCompatActivity {
     public static final String IS_PARTICIPATE = "isParticipate";
     public static final String IS_USER_1 = "isUser1";
 
+    private boolean isParticipate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,17 +43,26 @@ public class ChatActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbarChat);
         setSupportActionBar(toolbar);
 
-        firebaseHelper = new FirebaseHelper();
+        firebaseHelper = FirebaseHelper.getInstance();
         Bundle intentExtras = getIntent().getExtras();
         Debate debate = (Debate) intentExtras.getSerializable(DEBATE_VALUE);
-        boolean isParticipate = intentExtras.getBoolean(IS_PARTICIPATE);
+        isParticipate = intentExtras.getBoolean(IS_PARTICIPATE);
         boolean isUser1 = intentExtras.getBoolean(IS_USER_1);
 
         if (isParticipate && !isUser1){
-            debate.setUser1(false);
-            debate.setUserId(firebaseHelper.getUserId());
             Log.d(TAG, "chatJoin");
             firebaseHelper.joinDebate(debate, this);
+        }
+        if (isParticipate && isUser1){
+            Log.d(TAG, "chatStart");
+            Log.d(TAG, debate.toString());
+            firebaseHelper.startDebate(debate, this);
+        }
+        if (!isParticipate){
+            // TO DO: FINISH PARTICIPATE
+            Log.d(TAG, "participateStart");
+            findViewById(R.id.relativeLayout).setVisibility(View.INVISIBLE);
+            firebaseHelper.spectateDebate(debate, this);
         }
 
         messages = new ArrayList<Message>();
@@ -62,6 +73,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new ChatRecyclerAdapter(messages, this);
         recyclerView.setAdapter(mAdapter);
+
     }
 
     public void addMessage(Message message){
@@ -115,7 +127,19 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void onLeaveClick(View v){
-        Intent intent = new Intent(this, FinishedActivity.class);
-        startActivity(intent);
+        finish();
+    }
+
+    public void wrapUp(){
+        if (isParticipate) {
+            Intent intent = new Intent(this, FinishedActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        wrapUp();
+        super.onStop();
     }
 }

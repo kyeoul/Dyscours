@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
 
         participateDebates = new ArrayList<Debate>();
         spectateDebates = new ArrayList<Debate>();
-        firebaseHelper = new FirebaseHelper();
+        firebaseHelper = FirebaseHelper.getInstance();
         firebaseHelper.initDebateListener(this);
 
         if (savedInstanceState == null) {

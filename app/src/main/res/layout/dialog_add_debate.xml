@@ -12,25 +12,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/topicPromptString"/>
-        
-        <EditText
-            android:layout_width="250dp"
-            android:layout_height="45dp"
-            android:layout_gravity="center_horizontal"
-            android:textSize="@dimen/smallText"
-            android:paddingBottom="10dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="@string/opinionPromptString"/>
 
         <EditText
+            android:id="@+id/opinionEditText"
             android:layout_width="250dp"
             android:layout_height="45dp"
             android:layout_gravity="center_horizontal"
-            android:textSize="@dimen/smallText"
-            android:paddingBottom="@dimen/smallPadding"/>
+            android:paddingBottom="@dimen/smallPadding"
+            android:textSize="@dimen/smallText" />
     </LinearLayout>
 </ScrollView>

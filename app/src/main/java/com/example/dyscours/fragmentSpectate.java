@@ -46,8 +46,6 @@ public class fragmentSpectate extends DyscoursFragment{
 
     private OnFragmentInteractionListener mListener;
 
-    private boolean allowTouch;
-
     public fragmentSpectate() {
         // Required empty public constructor
     }
@@ -80,6 +78,11 @@ public class fragmentSpectate extends DyscoursFragment{
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -90,42 +93,8 @@ public class fragmentSpectate extends DyscoursFragment{
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        RecyclerView.Adapter adapter = new TopicRecyclerAdapter(arrayList);
+        RecyclerView.Adapter adapter = new TopicRecyclerAdapter(arrayList, this, (MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
-        final DyscoursFragment finalThis = this;
-        recyclerView.addOnItemTouchListener(new RecyclerView.OnItemTouchListener() {
-            @Override
-            public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-                Log.d(TAG, "onInterceptTouchEvent");
-                if (!allowTouch)
-                    return false;
-                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                if (child != null) {
-                    int index = rv.getChildAdapterPosition(child);
-                    FirebaseHelper firebaseHelper = ((MainActivity) getActivity()).getFirebaseHelper();
-                    // https://stackoverflow.com/questions/14333449/passing-data-through-intent-using-serializable
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(ChatActivity.DEBATE_VALUE, ((MainActivity) getActivity()).getParticipateDebates().get(index));
-                    bundle.putBoolean(ChatActivity.IS_PARTICIPATE, false);
-                    bundle.putBoolean(ChatActivity.IS_USER_1, false);
-                    Intent intent = new Intent(getActivity(), ChatActivity.class);
-                    intent.putExtras(bundle);
-                    finalThis.setAllowTouch(false);
-                    startActivity(intent);
-                }
-                return false;
-            }
-
-            @Override
-            public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
-                Log.d(TAG, "touchParticipate");
-            }
-
-            @Override
-            public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
-                Log.d(TAG, "onRequestDisallowInterceptTouchEvent");
-            }
-        });
         Log.d("iAmHere", "I got here!");
         return view;
     }
@@ -218,13 +187,4 @@ public class fragmentSpectate extends DyscoursFragment{
         this.mListener = mListener;
     }
 
-    @Override
-    public boolean isAllowTouch() {
-        return allowTouch;
-    }
-
-    @Override
-    public void setAllowTouch(boolean allowTouch) {
-        this.allowTouch = allowTouch;
-    }
 }

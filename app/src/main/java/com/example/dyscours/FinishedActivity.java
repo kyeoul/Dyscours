@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SeekBar;
 
 public class FinishedActivity extends AppCompatActivity {
 
@@ -31,6 +32,7 @@ public class FinishedActivity extends AppCompatActivity {
     public void onHomeClick(View v){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void onStartClick(){
@@ -42,5 +44,15 @@ public class FinishedActivity extends AppCompatActivity {
                 }
             }).setNegativeButton("Exit", null);
             builder.create().show();
+            finish();
+    }
+
+    @Override
+    public void finish() {
+        SeekBar seekBar = findViewById(R.id.seekBarRating);
+        int rating = seekBar.getProgress();
+        FirebaseHelper.getInstance().rateDebate(rating);
+        FirebaseHelper.getInstance().stopDebate();
+        super.finish();
     }
 }
