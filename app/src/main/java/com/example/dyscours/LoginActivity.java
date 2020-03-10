@@ -114,7 +114,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View v, boolean hasFocus){
                 if(hasFocus){
-                    loginBackground.startTransition(300);
                     changeDrawableTint(getResources().getColor(R.color.colorAccent), emailId, getResources().getDrawable(R.drawable.ic_user));
                 }
                 else{
@@ -127,10 +126,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if(hasFocus){
-                    loginBackground.reverseTransition(300);
+                    loginBackground.startTransition(300);
                     changeDrawableTint(getResources().getColor(R.color.colorPrimary), password, getResources().getDrawable(R.drawable.ic_password));
                 }
                 else{
+                    loginBackground.reverseTransition(300);
                     changeDrawableTint(getResources().getColor(R.color.messageTextColor), password, getResources().getDrawable(R.drawable.ic_password));
                 }
             }
