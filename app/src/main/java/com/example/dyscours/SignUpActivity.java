@@ -2,12 +2,18 @@ package com.example.dyscours;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.TransitionDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -76,5 +82,45 @@ public class SignUpActivity extends AppCompatActivity {
             }
         });
 
+        ImageView imageView = (ImageView) findViewById(R.id.signInImage);
+        final TransitionDrawable loginBackground = (TransitionDrawable) imageView.getDrawable();
+
+        changeDrawableTint(getResources().getColor(R.color.messageTextColor), emailId, getResources().getDrawable(R.drawable.ic_user));
+        changeDrawableTint(getResources().getColor(R.color.messageTextColor), password, getResources().getDrawable(R.drawable.ic_password));
+
+        emailId.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            @Override
+            public void onFocusChange(View v, boolean hasFocus){
+                if(hasFocus){
+                    changeDrawableTint(getResources().getColor(R.color.colorAccent), emailId, getResources().getDrawable(R.drawable.ic_user));
+                }
+                else{
+                    changeDrawableTint(getResources().getColor(R.color.messageTextColor), emailId, getResources().getDrawable(R.drawable.ic_user));
+                }
+            }
+        });
+
+        password.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if(hasFocus){
+                    loginBackground.startTransition(300);
+                    changeDrawableTint(getResources().getColor(R.color.colorPrimary), password, getResources().getDrawable(R.drawable.ic_password));
+                }
+                else{
+                    loginBackground.reverseTransition(300);
+                    changeDrawableTint(getResources().getColor(R.color.messageTextColor), password, getResources().getDrawable(R.drawable.ic_password));
+                }
+            }
+        });
+
+    }
+
+    public void changeDrawableTint(int color, EditText editText, Drawable icon){
+        Drawable drawable = icon;
+        drawable = DrawableCompat.wrap(drawable);
+        DrawableCompat.setTint(drawable, color);
+        DrawableCompat.setTintMode(drawable, PorterDuff.Mode.SRC_IN);
+        editText.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
     }
 }

@@ -18,6 +18,7 @@ public class Debate implements Serializable {
     private int debateRatingUser1;
     private int debateRatingUser2;
     private boolean isOpenForParticipate;
+    private boolean isClosed;
 
     /**
      * starting a debate
@@ -32,6 +33,7 @@ public class Debate implements Serializable {
         this.isOpenForParticipate = true;
         debateRatingUser1 = -1;
         debateRatingUser2 = -1;
+        isClosed = false;
     }
 
     /**
@@ -45,6 +47,7 @@ public class Debate implements Serializable {
         this.isOpenForParticipate = false;
         debateRatingUser1 = -1;
         debateRatingUser2 = -1;
+        isClosed = false;
     }
 
     /**
