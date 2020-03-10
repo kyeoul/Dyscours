@@ -10,7 +10,7 @@ public class Debate implements Serializable {
     private String debateName;
     private String userId;
     private boolean isUser1;
-    private int postedTime;
+    private int startedTime;
     private int timeLimit;
     private String key;
     private int user1Rating;
@@ -109,13 +109,6 @@ public class Debate implements Serializable {
         isUser1 = user1;
     }
 
-    public int getPostedTime() {
-        return postedTime;
-    }
-
-    public void setPostedTime(int postedTime) {
-        this.postedTime = postedTime;
-    }
 
     public int getUser1Rating() {
         return user1Rating;

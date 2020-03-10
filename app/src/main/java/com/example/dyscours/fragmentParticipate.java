@@ -113,11 +113,12 @@ public class fragmentParticipate extends DyscoursFragment {
             }
         });
 
-        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                reloadDebates();
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Message> messages;
+    private TextView timeView;
 
     public static final int JOIN = 2;
     public static final int START = 1;
@@ -73,6 +75,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new ChatRecyclerAdapter(messages, this);
         recyclerView.setAdapter(mAdapter);
+        timeView = findViewById(R.id.timerTextView);
 
     }
 
@@ -124,6 +127,13 @@ public class ChatActivity extends AppCompatActivity {
 
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         this.layoutManager = layoutManager;
+    }
+
+    public void updateTimer(int seconds){
+        int minutes = seconds/60;
+        seconds = seconds%60;
+        String out = minutes + ":" + (seconds < 10 ? " " : "") + seconds;
+        timeView.setText(out);
     }
 
     public void onLeaveClick(View v){

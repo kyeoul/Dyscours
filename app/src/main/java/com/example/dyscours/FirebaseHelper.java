@@ -1,5 +1,6 @@
 package com.example.dyscours;
 
+import android.os.Handler;
 import android.renderscript.Sampler;
 import android.util.Log;
 
@@ -19,6 +20,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import java.time.Instant;
@@ -350,6 +352,23 @@ public class FirebaseHelper {
         currentChildEventListener = childEventListener;
         Log.d(TAG, "startMonitor3");
         return true;
+    }
+
+    public void startClock(final int timeLimit, final ChatActivity chatActivity){
+        final Handler handler = new Handler();
+        handler.post(new Runnable() {
+            private int secondsRemaining = timeLimit;
+            @Override
+            public void run() {
+                secondsRemaining--;
+                if (secondsRemaining < 0){
+                    chatActivity.finish();
+                    return;
+                }
+                chatActivity.updateTimer(secondsRemaining);
+                handler.postDelayed(this,timeLimit * 1000);
+            }
+        });
     }
 
     public String getUserId(){

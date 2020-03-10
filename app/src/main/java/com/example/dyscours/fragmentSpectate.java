@@ -98,11 +98,11 @@ public class fragmentSpectate extends DyscoursFragment{
         recyclerView.setAdapter(adapter);
         Log.d("iAmHere", "I got here!");
 
-        SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
 
