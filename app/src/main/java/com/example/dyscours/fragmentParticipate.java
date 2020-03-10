@@ -114,8 +114,8 @@ public class fragmentParticipate extends DyscoursFragment {
         return view;
     }
 
-    public void updateView(){
-        recyclerView.getAdapter().notifyDataSetChanged();
+    public void updateViewAdded(){
+        recyclerView.getAdapter().notifyItemInserted(0);
     }
 
     public void dialogBuilder(){

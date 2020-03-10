@@ -99,8 +99,8 @@ public class fragmentSpectate extends DyscoursFragment{
         return view;
     }
 
-    public void updateView(){
-        recyclerView.getAdapter().notifyDataSetChanged();
+    public void updateViewAdded(){
+        recyclerView.getAdapter().notifyItemInserted(0);
     }
 
 

@@ -75,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
     }
 
     public void reloadDebates(){
-        currentFragment.updateView();
         participateDebates.clear();
         spectateDebates.clear();
         firebaseHelper.initDebateListener(this);
@@ -84,12 +83,12 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
     public void addDebate(Debate debate){
         Log.d(TAG, "addDebate");
         if (debate.isOpenForParticipate()){
-            participateDebates.add(debate);
+            participateDebates.add(0,debate);
         }
         else {
-            spectateDebates.add(debate);
+            spectateDebates.add(0, debate);
         }
-        currentFragment.updateView();
+        currentFragment.updateViewAdded();
     }
 
     // TODO: FIx this
