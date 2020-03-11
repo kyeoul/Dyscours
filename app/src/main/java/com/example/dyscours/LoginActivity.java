@@ -2,6 +2,7 @@ package com.example.dyscours;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.drawable.DrawableCompat;
 
 import android.content.Intent;
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     TextView tvSignUp;
     FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    CardView cardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.editText2Log);
         btnSignIn = findViewById(R.id.button);
         tvSignUp = findViewById(R.id.textView);
+        cardView = findViewById(R.id.cardView);
 
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -137,10 +140,12 @@ public class LoginActivity extends AppCompatActivity {
                 if(hasFocus){
                     loginBackground.startTransition(300);
                     changeDrawableTint(getResources().getColor(R.color.colorPrimary), password, getResources().getDrawable(R.drawable.ic_password));
+                    cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 }
                 else{
                     loginBackground.reverseTransition(300);
                     changeDrawableTint(getResources().getColor(R.color.messageTextColor), password, getResources().getDrawable(R.drawable.ic_password));
+                    cardView.setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
                 }
             }
         });

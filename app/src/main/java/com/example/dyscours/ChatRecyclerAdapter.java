@@ -1,10 +1,13 @@
 package com.example.dyscours;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapter.ChatViewHolder> {
     private ArrayList<Message> mDataset;
     private ChatActivity chatActivity;
+    Context context;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -44,6 +48,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         ViewGroup v = (ViewGroup) LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.message_layout, parent, false);
         ChatViewHolder vh = new ChatViewHolder(v);
+        context = parent.getContext();
         return vh;
     }
 
@@ -62,6 +67,9 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         else {
             contentTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
             contentTextView.setBackground(chatActivity.getResources().getDrawable(R.drawable.that_chat_bubble));
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentTextView.getLayoutParams();
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_END);
+            contentTextView.setLayoutParams(layoutParams);
         }
     }
 

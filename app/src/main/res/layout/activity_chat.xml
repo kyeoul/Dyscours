@@ -27,7 +27,8 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         android:paddingRight="10dp"
-        android:paddingLeft="10dp">
+        android:paddingLeft="10dp"
+        android:background="@android:color/transparent">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardLayout"
@@ -67,7 +68,7 @@
                     android:background="@android:color/transparent"/>
 
                 <Button
-                    android:id="@+id/message"
+                    android:id="@+id/messageButton"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:background="@drawable/ic_send"

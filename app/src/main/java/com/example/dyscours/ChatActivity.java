@@ -63,7 +63,11 @@ public class ChatActivity extends AppCompatActivity {
         if (!isParticipate){
             // TO DO: FINISH PARTICIPATE
             Log.d(TAG, "participateStart");
-            findViewById(R.id.relativeLayout).setVisibility(View.INVISIBLE);
+            EditText chatText = findViewById(R.id.messageEditText);
+            chatText.setFocusable(false);
+            chatText.setHint("You're Spectating! Wait until the chat is over...");
+            Button send = findViewById(R.id.messageButton);
+            send.setVisibility(View.INVISIBLE);
             firebaseHelper.spectateDebate(debate, this);
         }
 
