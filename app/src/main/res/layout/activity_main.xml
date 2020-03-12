@@ -28,6 +28,16 @@
         layout = "@layout/toolbar_main"
         android:id="@+id/toolbar" />
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/ic_menu"
+        android:background="@android:color/transparent"
+        android:onClick="onClickPopup"/>
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"

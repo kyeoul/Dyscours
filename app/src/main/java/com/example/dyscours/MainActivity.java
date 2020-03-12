@@ -5,16 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -151,11 +156,31 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
 
     //Menu Shenanigans
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_items, menu);
-        return true;
+    //@Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_items, menu);
+//        return true;
+//    }
+
+    public void onClickPopup(View v){showPopup(v, R.style.Widget_AppCompat_Light_PopupMenu);}
+
+    public void showPopup(View v, int style){
+        Context wrapper = new ContextThemeWrapper(this, style);
+
+        PopupMenu popupMenu = new PopupMenu(wrapper, v);
+
+        popupMenu.getMenuInflater().inflate(R.menu.menu_items, popupMenu.getMenu());
+
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                return MainActivity.this.onOptionsItemSelected(menuItem);
+
+            }
+        });
+
+        popupMenu.show();
     }
 
     @Override
