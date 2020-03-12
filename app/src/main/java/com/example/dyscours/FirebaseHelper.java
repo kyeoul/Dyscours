@@ -47,11 +47,14 @@ public class FirebaseHelper {
         return currentInstance;
     }
 
-    public boolean startDebate(Debate debate, final ChatActivity chatActivity){
+    public boolean startDebate(final Debate debate, final ChatActivity chatActivity){
         if (debate.getTimeLimit() < 0 || debate.getDebateName() == null){
             return false;
         }
         debate.setUser1(true);
+        debate.setHasUser2Joined(false);
+        debate.setClosed(false);
+        debate.setOpenForParticipate(true);
         DatabaseReference db = mFirebaseDatabaseReference.child("debates");
         String key =  db.push().getKey();
         putUserRatingInDebate();
@@ -61,10 +64,11 @@ public class FirebaseHelper {
         newData.put("user1", debate.getUserId());
         newData.put("timeLimit", debate.getTimeLimit());
         newData.put("user1Rating", debate.getUser1Rating());
-        newData.put("isOpenForParticipate", true);
+        newData.put("isOpenForParticipate", debate.isOpenForParticipate());
         newData.put("debateRatingUser1", -1);
         newData.put("debateRatingUser2", -1);
-        newData.put("isClosed", false);
+        newData.put("isClosed", debate.isClosed());
+        newData.put("hasUser2Joined", debate.isHasUser2Joined());
         db.child(key).setValue(newData);
         debate.setKey(key);
         currentdebate = debate;
@@ -96,6 +100,17 @@ public class FirebaseHelper {
 
             }
         });
+        db.child(key).child("hasUser2Joined").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                startClock(debate.getTimeLimit(), chatActivity);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         return true;
     }
 
@@ -110,6 +125,9 @@ public class FirebaseHelper {
         db.child(key).child("user2").setValue(debate.getUserId());
         putUserRatingInDebate();
         db.child(key).child("isOpenForParticipate").setValue(false);
+        db.child(key).child("hasUser2Joined").setValue(true);
+        startClock(debate.getTimeLimit(), chatActivity);
+        debate.setOpenForParticipate(false);
         currentdebate = debate;
         db.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -360,13 +378,14 @@ public class FirebaseHelper {
             private int secondsRemaining = timeLimit;
             @Override
             public void run() {
+                Log.d(TAG, "clockRun");
                 secondsRemaining--;
                 if (secondsRemaining < 0){
                     chatActivity.finish();
                     return;
                 }
                 chatActivity.updateTimer(secondsRemaining);
-                handler.postDelayed(this,timeLimit * 1000);
+                handler.postDelayed(this,1000);
             }
         });
     }
