@@ -90,7 +90,7 @@ public class ChatActivity extends AppCompatActivity {
 
     public void sendMessage(View v){
         EditText contentField = findViewById(R.id.messageEditText);
-        String content = contentField.getText().toString();
+        String content = contentField.getText().toString().trim();
         if(content.equals("")){
             Toast.makeText(this, "You need to type something", Toast.LENGTH_SHORT).show();
         }
