@@ -52,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         emailId = findViewById(R.id.editTextLog);
         password = findViewById(R.id.editText2Log);
-        btnSignIn = findViewById(R.id.button);
+        btnSignIn = findViewById(R.id.button1);
         tvSignUp = findViewById(R.id.textView);
         cardView = findViewById(R.id.cardView);
 
