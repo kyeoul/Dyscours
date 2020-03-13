@@ -134,6 +134,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void updateTimer(int seconds){
+        Log.d(TAG, "updateTimer");
         int minutes = seconds/60;
         seconds = seconds%60;
         String out = minutes + ":" + (seconds < 10 ? " " : "") + seconds;

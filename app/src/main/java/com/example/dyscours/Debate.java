@@ -19,6 +19,7 @@ public class Debate implements Serializable {
     private int debateRatingUser2;
     private boolean isOpenForParticipate;
     private boolean isClosed;
+    private boolean hasUser2Joined;
 
     /**
      * starting a debate
@@ -148,6 +149,30 @@ public class Debate implements Serializable {
 
     public void setDebateRatingUser2(int debateRatingUser2) {
         this.debateRatingUser2 = debateRatingUser2;
+    }
+
+    public int getStartedTime() {
+        return startedTime;
+    }
+
+    public void setStartedTime(int startedTime) {
+        this.startedTime = startedTime;
+    }
+
+    public boolean isClosed() {
+        return isClosed;
+    }
+
+    public void setClosed(boolean closed) {
+        isClosed = closed;
+    }
+
+    public boolean isHasUser2Joined() {
+        return hasUser2Joined;
+    }
+
+    public void setHasUser2Joined(boolean hasUser2Joined) {
+        this.hasUser2Joined = hasUser2Joined;
     }
 
     public String toString(){
