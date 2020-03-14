@@ -29,6 +29,7 @@ public class FirebaseHelper {
     private DatabaseReference mFirebaseDatabaseReference;
     private static final String TAG = "TagFirebaseHelper";
     private Debate currentdebate;
+    private boolean runTimerAllowed;
     private fragmentParticipate currentParticipate;
     private fragmentSpectate currentSpectate;
     private ChildEventListener currentChildEventListener;
@@ -38,6 +39,7 @@ public class FirebaseHelper {
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         currentdebate = null;
         currentChildEventListener = null;
+        runTimerAllowed = true;
     }
 
     public static FirebaseHelper getInstance(){
@@ -48,6 +50,7 @@ public class FirebaseHelper {
     }
 
     public boolean startDebate(final Debate debate, final ChatActivity chatActivity){
+        runTimerAllowed = true;
         if (debate.getTimeLimit() < 0 || debate.getDebateName() == null){
             return false;
         }
@@ -55,8 +58,8 @@ public class FirebaseHelper {
         debate.setHasUser2Joined(false);
         debate.setClosed(false);
         debate.setOpenForParticipate(true);
-        DatabaseReference db = mFirebaseDatabaseReference.child("debates");
-        String key =  db.push().getKey();
+        final DatabaseReference db = mFirebaseDatabaseReference.child("debates");
+        final String key =  db.push().getKey();
         putUserRatingInDebate();
         debate.setUserId(getUserId());
         Map<String, Object> newData = new HashMap<>();
@@ -72,6 +75,7 @@ public class FirebaseHelper {
         db.child(key).setValue(newData);
         debate.setKey(key);
         currentdebate = debate;
+        chatActivity.updateTimer(debate.getTimeLimit());
         db.child(key).child("messages").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
@@ -103,7 +107,10 @@ public class FirebaseHelper {
         db.child(key).child("hasUser2Joined").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                startClock(debate.getTimeLimit(), chatActivity);
+                if (((Boolean)dataSnapshot.getValue()).booleanValue()) {
+                    startClock(debate.getTimeLimit(), chatActivity);
+                    db.child(key).removeEventListener(this);
+                }
             }
 
             @Override
@@ -118,6 +125,7 @@ public class FirebaseHelper {
         if (debate.getKey() == null){
             return false;
         }
+        runTimerAllowed = true;
         debate.setUser1(false);
         DatabaseReference db = mFirebaseDatabaseReference.child("debates");
         String key = debate.getKey();
@@ -186,6 +194,7 @@ public class FirebaseHelper {
         if (debate.getKey() == null){
             return false;
         }
+        runTimerAllowed = true;
         debate.setUser1(false);
         DatabaseReference db = mFirebaseDatabaseReference.child("debates");
         String key = debate.getKey();
@@ -236,12 +245,12 @@ public class FirebaseHelper {
         return true;
     }
 
-    public void stopDebate(){
-
-    }
-
     public void closeDebate(){
+        DatabaseReference db = mFirebaseDatabaseReference.child("debates");
+        db.child(currentdebate.getKey()).child("messages").removeEventListener(currentChildEventListener);
+        currentChildEventListener = null;
         currentdebate = null;
+        runTimerAllowed = false;
     }
 
     public boolean sendMessage(Message message){
@@ -373,11 +382,16 @@ public class FirebaseHelper {
     }
 
     public void startClock(final int timeLimit, final ChatActivity chatActivity){
+        if (!runTimerAllowed)
+            return;
         final Handler handler = new Handler();
-        handler.post(new Runnable() {
+        Runnable runnable = new Runnable() {
             private int secondsRemaining = timeLimit;
             @Override
             public void run() {
+                if (!runTimerAllowed){
+                    return;
+                }
                 Log.d(TAG, "clockRun");
                 secondsRemaining--;
                 if (secondsRemaining < 0){
@@ -387,7 +401,8 @@ public class FirebaseHelper {
                 chatActivity.updateTimer(secondsRemaining);
                 handler.postDelayed(this,1000);
             }
-        });
+        };
+        handler.post(runnable);
     }
 
     public String getUserId(){

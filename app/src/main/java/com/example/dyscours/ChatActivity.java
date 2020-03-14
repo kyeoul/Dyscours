@@ -50,6 +50,7 @@ public class ChatActivity extends AppCompatActivity {
         Debate debate = (Debate) intentExtras.getSerializable(DEBATE_VALUE);
         isParticipate = intentExtras.getBoolean(IS_PARTICIPATE);
         boolean isUser1 = intentExtras.getBoolean(IS_USER_1);
+        timeView = findViewById(R.id.timerTextView);
 
         if (isParticipate && !isUser1){
             Log.d(TAG, "chatJoin");
@@ -79,7 +80,7 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new ChatRecyclerAdapter(messages, this);
         recyclerView.setAdapter(mAdapter);
-        timeView = findViewById(R.id.timerTextView);
+
 
     }
 
@@ -137,7 +138,7 @@ public class ChatActivity extends AppCompatActivity {
         Log.d(TAG, "updateTimer");
         int minutes = seconds/60;
         seconds = seconds%60;
-        String out = minutes + ":" + (seconds < 10 ? " " : "") + seconds;
+        String out = minutes + (seconds < 10 ? ":0" : ":") + seconds;
         timeView.setText(out);
     }
 

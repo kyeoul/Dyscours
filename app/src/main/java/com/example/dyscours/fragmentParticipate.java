@@ -141,7 +141,7 @@ public class fragmentParticipate extends DyscoursFragment {
                 if (debateName == null || debateName.isEmpty()){
                     return;
                 }
-                Debate debate = new Debate(opinionEditText.getText().toString(), 600);
+                Debate debate = new Debate(opinionEditText.getText().toString(), 20);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(ChatActivity.DEBATE_VALUE, debate);
                 bundle.putBoolean(ChatActivity.IS_PARTICIPATE, true);
