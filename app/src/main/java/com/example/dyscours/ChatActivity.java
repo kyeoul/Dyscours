@@ -1,5 +1,6 @@
 package com.example.dyscours;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,6 +14,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -148,9 +154,27 @@ public class ChatActivity extends AppCompatActivity {
 
     public void wrapUp(){
         if (isParticipate) {
-            firebaseHelper.getmFirebaseDatabaseReference().child("debates").child(firebaseHelper.getCurrentdebate().getKey()).child("isClosed").setValue(true);
-            Intent intent = new Intent(this, FinishedActivity.class);
-            startActivity(intent);
+            String key = firebaseHelper.getCurrentdebate().getKey();
+            DatabaseReference db = firebaseHelper.getmFirebaseDatabaseReference();
+            db.child("debates").child(key).child("isClosed").setValue(true);
+            final ChatActivity finalThis = this;
+            ValueEventListener user2JoinedListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getValue() == null || !((Boolean) dataSnapshot.getValue()).booleanValue()){
+                        return;
+                    }
+                    Intent intent = new Intent(finalThis, FinishedActivity.class);
+                    startActivity(intent);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            };
+            db.child("debates").child(key).child("hasUser2Joined").addListenerForSingleValueEvent(user2JoinedListener);
+
         }
     }
 

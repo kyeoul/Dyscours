@@ -31,8 +31,7 @@ public class FirebaseHelper {
     private static final String TAG = "TagFirebaseHelper";
     private Debate currentdebate;
     private boolean runTimerAllowed;
-    private fragmentParticipate currentParticipate;
-    private fragmentSpectate currentSpectate;
+    private MainActivity currentMainActivity;
     private ChildEventListener currentChildEventListener;
     private static FirebaseHelper currentInstance;
 
@@ -62,6 +61,8 @@ public class FirebaseHelper {
         debate.setUserId(getUserId());
         final DatabaseReference db = mFirebaseDatabaseReference.child("debates");
         final String key =  db.push().getKey();
+        debate.setKey(key);
+        currentdebate = debate;
         final FirebaseHelper finalThis = this;
         mFirebaseDatabaseReference.child("debateIds").child(key).child("user1").setValue(getUserId(), new DatabaseReference.CompletionListener() {
             @Override
@@ -79,10 +80,9 @@ public class FirebaseHelper {
                 newData.put("isClosed", debate.isClosed());
                 newData.put("hasUser2Joined", debate.isHasUser2Joined());
                 db.child(key).setValue(newData);
+                finalThis.listenForClosedDebate(chatActivity);
             }
         });
-        debate.setKey(key);
-        currentdebate = debate;
         chatActivity.updateTimer(debate.getTimeLimit());
         db.child(key).child("messages").addChildEventListener(new ChildEventListener() {
             @Override
@@ -133,10 +133,12 @@ public class FirebaseHelper {
         if (debate.getKey() == null){
             return false;
         }
+        currentdebate = debate;
         runTimerAllowed = true;
         debate.setUser1(false);
         final DatabaseReference db = mFirebaseDatabaseReference.child("debates");
         final String key = debate.getKey();
+        final FirebaseHelper finalThis = this;
         debate.setUserId(getUserId());
         mFirebaseDatabaseReference.child("debateIds").child(key).child("user2").setValue(getUserId(), new DatabaseReference.CompletionListener() {
             @Override
@@ -144,11 +146,11 @@ public class FirebaseHelper {
                 putUserRatingInDebate();
                 db.child(key).child("isOpenForParticipate").setValue(false);
                 db.child(key).child("hasUser2Joined").setValue(true);
+                finalThis.listenForClosedDebate(chatActivity);
             }
         });
         startClock(debate.getTimeLimit(), chatActivity);
         debate.setOpenForParticipate(false);
-        currentdebate = debate;
         db.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -257,6 +259,28 @@ public class FirebaseHelper {
         return true;
     }
 
+    public void listenForClosedDebate(final ChatActivity chatActivity){
+        final DatabaseReference db = mFirebaseDatabaseReference;
+        final FirebaseHelper finalThis = this;
+        db.child("debates").child(currentdebate.getKey()).child("isClosed").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() != null && ((Boolean)dataSnapshot.getValue()).booleanValue()){
+                    if (chatActivity != null && !chatActivity.isFinishing() && !chatActivity.isDestroyed()){
+                        chatActivity.finish();
+                    }
+                    db.child("debates").child(currentdebate.getKey()).setValue(null);
+                    db.child("debateIds").child(currentdebate.getKey()).setValue(null);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public void closeDebate(){
         DatabaseReference db = mFirebaseDatabaseReference.child("debates");
         db.child(currentdebate.getKey()).child("messages").removeEventListener(currentChildEventListener);
@@ -349,8 +373,10 @@ public class FirebaseHelper {
     }
 
     public boolean initDebateListener(final MainActivity mainActivity){
-        if (mainActivity.isDestroyed())
+        if (mainActivity.isDestroyed()) {
             return false;
+        }
+        currentMainActivity = mainActivity;
         DatabaseReference db = mFirebaseDatabaseReference.child("debates");
         if (currentChildEventListener != null)
             db.removeEventListener(currentChildEventListener);
@@ -423,5 +449,37 @@ public class FirebaseHelper {
 
     public String getUserId(){
         return FirebaseAuth.getInstance().getUid();
+    }
+
+    public boolean isRunTimerAllowed() {
+        return runTimerAllowed;
+    }
+
+    public void setRunTimerAllowed(boolean runTimerAllowed) {
+        this.runTimerAllowed = runTimerAllowed;
+    }
+
+    public MainActivity getCurrentMainActivity() {
+        return currentMainActivity;
+    }
+
+    public void setCurrentMainActivity(MainActivity currentMainActivity) {
+        this.currentMainActivity = currentMainActivity;
+    }
+
+    public ChildEventListener getCurrentChildEventListener() {
+        return currentChildEventListener;
+    }
+
+    public void setCurrentChildEventListener(ChildEventListener currentChildEventListener) {
+        this.currentChildEventListener = currentChildEventListener;
+    }
+
+    public static FirebaseHelper getCurrentInstance() {
+        return currentInstance;
+    }
+
+    public static void setCurrentInstance(FirebaseHelper currentInstance) {
+        FirebaseHelper.currentInstance = currentInstance;
     }
 }

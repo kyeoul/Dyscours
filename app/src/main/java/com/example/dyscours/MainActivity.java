@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         participateDebates = new ArrayList<Debate>();
         spectateDebates = new ArrayList<Debate>();
         firebaseHelper = FirebaseHelper.getInstance();
-        firebaseHelper.initDebateListener(this);
 
         if (savedInstanceState == null) {
             Log.d(TAG, "savedInst");
@@ -83,6 +82,12 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
 
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        reloadDebates();
     }
 
     //exp
@@ -119,6 +124,9 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
 
     public void addDebate(Debate debate){
         Log.d(TAG, "addDebate");
+        if (firebaseHelper.getCurrentdebate() != null && debate.getKey().equals(firebaseHelper.getCurrentdebate().getKey())){
+            return;
+        }
         if (debate.isOpenForParticipate()){
             participateDebates.add(0,debate);
         }
