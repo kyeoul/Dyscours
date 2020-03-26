@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -58,21 +59,28 @@ public class FirebaseHelper {
         debate.setHasUser2Joined(false);
         debate.setClosed(false);
         debate.setOpenForParticipate(true);
+        debate.setUserId(getUserId());
         final DatabaseReference db = mFirebaseDatabaseReference.child("debates");
         final String key =  db.push().getKey();
-        putUserRatingInDebate();
-        debate.setUserId(getUserId());
-        Map<String, Object> newData = new HashMap<>();
-        newData.put("debateName", debate.getDebateName());
-        newData.put("user1", debate.getUserId());
-        newData.put("timeLimit", debate.getTimeLimit());
-        newData.put("user1Rating", debate.getUser1Rating());
-        newData.put("isOpenForParticipate", debate.isOpenForParticipate());
-        newData.put("debateRatingUser1", -1);
-        newData.put("debateRatingUser2", -1);
-        newData.put("isClosed", debate.isClosed());
-        newData.put("hasUser2Joined", debate.isHasUser2Joined());
-        db.child(key).setValue(newData);
+        final FirebaseHelper finalThis = this;
+        mFirebaseDatabaseReference.child("debateIds").child(key).child("user1").setValue(getUserId(), new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                Log.d(TAG, "onCompleteAdd");
+                finalThis.putUserRatingInDebate();
+                Map<String, Object> newData = new HashMap<>();
+                newData.put("debateName", debate.getDebateName());
+                newData.put("user1", debate.getUserId());
+                newData.put("timeLimit", debate.getTimeLimit());
+                newData.put("user1Rating", debate.getUser1Rating());
+                newData.put("isOpenForParticipate", debate.isOpenForParticipate());
+                newData.put("debateRatingUser1", -1);
+                newData.put("debateRatingUser2", -1);
+                newData.put("isClosed", debate.isClosed());
+                newData.put("hasUser2Joined", debate.isHasUser2Joined());
+                db.child(key).setValue(newData);
+            }
+        });
         debate.setKey(key);
         currentdebate = debate;
         chatActivity.updateTimer(debate.getTimeLimit());
@@ -107,7 +115,7 @@ public class FirebaseHelper {
         db.child(key).child("hasUser2Joined").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (((Boolean)dataSnapshot.getValue()).booleanValue()) {
+                if (dataSnapshot.getValue() != null && ((Boolean)dataSnapshot.getValue()).booleanValue()) {
                     startClock(debate.getTimeLimit(), chatActivity);
                     db.child(key).removeEventListener(this);
                 }
@@ -127,13 +135,17 @@ public class FirebaseHelper {
         }
         runTimerAllowed = true;
         debate.setUser1(false);
-        DatabaseReference db = mFirebaseDatabaseReference.child("debates");
-        String key = debate.getKey();
+        final DatabaseReference db = mFirebaseDatabaseReference.child("debates");
+        final String key = debate.getKey();
         debate.setUserId(getUserId());
-        db.child(key).child("user2").setValue(debate.getUserId());
-        putUserRatingInDebate();
-        db.child(key).child("isOpenForParticipate").setValue(false);
-        db.child(key).child("hasUser2Joined").setValue(true);
+        mFirebaseDatabaseReference.child("debateIds").child(key).child("user2").setValue(getUserId(), new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                putUserRatingInDebate();
+                db.child(key).child("isOpenForParticipate").setValue(false);
+                db.child(key).child("hasUser2Joined").setValue(true);
+            }
+        });
         startClock(debate.getTimeLimit(), chatActivity);
         debate.setOpenForParticipate(false);
         currentdebate = debate;
@@ -405,7 +417,11 @@ public class FirebaseHelper {
         handler.post(runnable);
     }
 
+    public void initUser(String uid){
+        mFirebaseDatabaseReference.child("users").child(uid).child("score").setValue(0);
+    }
+
     public String getUserId(){
-        return "TESTUID498476376";
+        return FirebaseAuth.getInstance().getUid();
     }
 }

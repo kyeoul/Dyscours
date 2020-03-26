@@ -148,6 +148,7 @@ public class ChatActivity extends AppCompatActivity {
 
     public void wrapUp(){
         if (isParticipate) {
+            firebaseHelper.getmFirebaseDatabaseReference().child("debates").child(firebaseHelper.getCurrentdebate().getKey()).child("isClosed").setValue(true);
             Intent intent = new Intent(this, FinishedActivity.class);
             startActivity(intent);
         }
