@@ -72,7 +72,10 @@ public class FirebaseHelper {
                 dbX.child("score").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        int userRating = (((Long) dataSnapshot.getValue()).intValue());
+                        int userRating = 0;
+                        if (dataSnapshot.getValue() != null) {
+                            userRating = (((Long) dataSnapshot.getValue()).intValue());
+                        }
                         Log.d(TAG, "onDataChange" + userRating);
                         debate.setUser1Rating(userRating);
                         Map<String, Object> newData = new HashMap<>();
@@ -359,7 +362,10 @@ public class FirebaseHelper {
         dbX.child("score").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int userRating = (((Long) dataSnapshot.getValue()).intValue());
+                int userRating = 0;
+                if (dataSnapshot.getValue() != null) {
+                    userRating = (((Long) dataSnapshot.getValue()).intValue());
+                }
                 DatabaseReference nDb = mFirebaseDatabaseReference.child("debates").child(currentdebate.getKey());
                 nDb.child("user" + (currentdebate.isUser1() ? 1 : 2) + "Rating").setValue(userRating);
                 if (currentdebate.isUser1()){
