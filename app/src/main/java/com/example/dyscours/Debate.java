@@ -59,12 +59,13 @@ public class Debate implements Serializable {
      * @param timeLimit
      * @param isOpenForParticipate
      */
-    public Debate(String key, String debateName, int user1Rating, int timeLimit, boolean isOpenForParticipate){
+    public Debate(String key, String debateName, int user1Rating, int timeLimit, boolean isOpenForParticipate, boolean isClosed){
         this.key = key;
         this.user1Rating = user1Rating;
         this.timeLimit = timeLimit;
         this.debateName = debateName;
         this.isOpenForParticipate = isOpenForParticipate;
+        this.isClosed = isClosed;
         debateRatingUser1 = -1;
         debateRatingUser2 = -1;
     };

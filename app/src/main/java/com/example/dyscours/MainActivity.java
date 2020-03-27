@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-
+                reloadDebates();
                 switch (item.getItemId()) {
                     case R.id.nav_spectate:
                         currentFragment = new fragmentSpectate();
@@ -88,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
     protected void onResume() {
         super.onResume();
         reloadDebates();
+        Log.d(TAG, "onResume");
     }
 
     //exp
@@ -119,31 +120,50 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
     public void reloadDebates(){
         participateDebates.clear();
         spectateDebates.clear();
+        currentFragment.getTopicRecyclerAdapter().notifyDataSetChanged();
         firebaseHelper.initDebateListener(this);
     }
 
     public void addDebate(Debate debate){
-        Log.d(TAG, "addDebate");
+        Log.d(TAG, "addDebate" + debate.getUser1Rating());
         if (firebaseHelper.getCurrentdebate() != null && debate.getKey().equals(firebaseHelper.getCurrentdebate().getKey())){
             return;
         }
         if (debate.isOpenForParticipate()){
             participateDebates.add(0,debate);
+            if (currentFragment instanceof fragmentParticipate){
+                currentFragment.updateViewAdded();
+            }
         }
-        else {
+        if (!debate.isClosed()) {
             spectateDebates.add(0, debate);
+            if (currentFragment instanceof fragmentSpectate){
+                currentFragment.updateViewAdded();
+            }
         }
-        currentFragment.updateViewAdded();
+
     }
 
     // TODO: FIx this
     public void removeDebate(Debate debate){
-        int index = findDebate(spectateDebates, debate.getKey(), 0, spectateDebates.size());
-        spectateDebates.remove(index);
+        int indexS = findDebate(spectateDebates, debate.getKey(), 0, spectateDebates.size());
+        if (indexS >= 0) {
+            if (currentFragment instanceof fragmentSpectate){
+                spectateDebates.remove(indexS);
+                currentFragment.updateViewRemoved(indexS);
+            }
+        }
+        int indexP = findDebate(participateDebates, debate.getKey(), 0, participateDebates.size());
+        if (indexP >= 0) {
+            if (currentFragment instanceof fragmentParticipate){
+                participateDebates.remove(indexP);
+                currentFragment.updateViewRemoved(indexP);
+            }
+        }
     }
 
     private int findDebate(ArrayList<Debate> debates, String key, int start, int end){
-        if (start > end || start > debates.size()){
+        if (start > end || start >= debates.size()){
             return -1;
         }
         if (start == end){
@@ -151,10 +171,10 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         }
         int check = (start + end)/2;
         int compare = debates.get(check).getKey().compareTo(key);
-        if (compare < 0){
+        if (compare > 0){
             return findDebate(debates, key, check + 1, end);
         }
-        else if (compare > 0){
+        else if (compare < 0){
             return findDebate(debates, key, start, check);
         }
         else {

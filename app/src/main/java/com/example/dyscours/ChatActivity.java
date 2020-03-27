@@ -162,6 +162,8 @@ public class ChatActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     if (dataSnapshot.getValue() == null || !((Boolean) dataSnapshot.getValue()).booleanValue()){
+                        firebaseHelper.deleteDebate();
+                        firebaseHelper.closeDebate();
                         return;
                     }
                     Intent intent = new Intent(finalThis, FinishedActivity.class);

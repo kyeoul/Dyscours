@@ -51,7 +51,6 @@ public class FinishedActivity extends AppCompatActivity {
         SeekBar seekBar = findViewById(R.id.seekBarRating);
         int rating = seekBar.getProgress();
         FirebaseHelper.getInstance().rateDebate(rating);
-        FirebaseHelper.getInstance().closeDebate();
         super.finish();
     }
 }

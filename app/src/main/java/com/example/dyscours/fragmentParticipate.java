@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -52,6 +53,7 @@ public class fragmentParticipate extends DyscoursFragment {
     private OnFragmentInteractionListener mListener;
 
     private RecyclerView recyclerView;
+    private RecyclerView.Adapter topicRecyclerAdapter;
 
     public fragmentParticipate() {
         // Required empty public constructor
@@ -104,6 +106,7 @@ public class fragmentParticipate extends DyscoursFragment {
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         RecyclerView.Adapter adapter = new TopicRecyclerAdapter(arrayList, this, (MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
+        topicRecyclerAdapter = adapter;
 
         ImageButton addButton = (ImageButton) view.findViewById(R.id.addDebateButton);
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +130,10 @@ public class fragmentParticipate extends DyscoursFragment {
 
     public void updateViewAdded(){
         recyclerView.getAdapter().notifyItemInserted(0);
+    }
+
+    public void updateViewRemoved(int index) {
+        recyclerView.getAdapter().notifyItemRemoved(index);
     }
 
     public void dialogBuilder(){
@@ -239,4 +246,12 @@ public class fragmentParticipate extends DyscoursFragment {
         this.recyclerView = recyclerView;
     }
 
+    @Override
+    public RecyclerView.Adapter getTopicRecyclerAdapter() {
+        return topicRecyclerAdapter;
+    }
+
+    public void setTopicRecyclerAdapter(RecyclerView.Adapter topicRecyclerAdapter) {
+        this.topicRecyclerAdapter = topicRecyclerAdapter;
+    }
 }

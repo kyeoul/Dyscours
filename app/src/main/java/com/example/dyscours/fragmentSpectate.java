@@ -44,6 +44,7 @@ public class fragmentSpectate extends DyscoursFragment{
     private String mParam2;
 
     private RecyclerView recyclerView;
+    private RecyclerView.Adapter topicRecyclerAdapter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -96,6 +97,7 @@ public class fragmentSpectate extends DyscoursFragment{
         recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         RecyclerView.Adapter adapter = new TopicRecyclerAdapter(arrayList, this, (MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
+        topicRecyclerAdapter = adapter;
         Log.d("iAmHere", "I got here!");
 
         final SwipeRefreshLayout swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
@@ -114,6 +116,9 @@ public class fragmentSpectate extends DyscoursFragment{
         recyclerView.getAdapter().notifyItemInserted(0);
     }
 
+    public void updateViewRemoved(int index) {
+        recyclerView.getAdapter().notifyItemRemoved(index);
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -198,4 +203,12 @@ public class fragmentSpectate extends DyscoursFragment{
         this.mListener = mListener;
     }
 
+    @Override
+    public RecyclerView.Adapter getTopicRecyclerAdapter() {
+        return topicRecyclerAdapter;
+    }
+
+    public void setTopicRecyclerAdapter(RecyclerView.Adapter topicRecyclerAdapter) {
+        this.topicRecyclerAdapter = topicRecyclerAdapter;
+    }
 }

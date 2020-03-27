@@ -70,7 +70,7 @@ public class TopicRecyclerAdapter extends RecyclerView.Adapter<TopicRecyclerAdap
                 // https://stackoverflow.com/questions/14333449/passing-data-through-intent-using-serializable
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(ChatActivity.DEBATE_VALUE, debate);
-                bundle.putBoolean(ChatActivity.IS_PARTICIPATE, debate.isOpenForParticipate());
+                bundle.putBoolean(ChatActivity.IS_PARTICIPATE, fragment instanceof fragmentParticipate);
                 bundle.putBoolean(ChatActivity.IS_USER_1, debate.isUser1());
                 Intent intent = new Intent(mainActivity, ChatActivity.class);
                 intent.putExtras(bundle);
