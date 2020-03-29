@@ -90,6 +90,7 @@ public class fragmentParticipate extends DyscoursFragment {
     @Override
     public void onResume() {
         super.onResume();
+        reloadDebates();
     }
 
     @Override

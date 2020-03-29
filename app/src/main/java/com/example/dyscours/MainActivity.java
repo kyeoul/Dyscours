@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                reloadDebates();
                 switch (item.getItemId()) {
                     case R.id.nav_spectate:
                         currentFragment = new fragmentSpectate();

@@ -82,6 +82,7 @@ public class fragmentSpectate extends DyscoursFragment{
     @Override
     public void onResume() {
         super.onResume();
+        reloadDebates();
     }
 
     @Override
