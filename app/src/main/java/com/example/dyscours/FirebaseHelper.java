@@ -27,12 +27,12 @@ import java.util.Map;
 import java.time.Instant;
 
 public class FirebaseHelper {
-    private DatabaseReference mFirebaseDatabaseReference;
+    private static DatabaseReference mFirebaseDatabaseReference;
     private static final String TAG = "TagFirebaseHelper";
-    private Debate currentdebate;
-    private boolean runTimerAllowed;
-    private MainActivity currentMainActivity;
-    private ChildEventListener currentChildEventListener;
+    private static Debate currentdebate;
+    private static boolean runTimerAllowed;
+    private static MainActivity currentMainActivity;
+    private static ChildEventListener currentChildEventListener;
     private static FirebaseHelper currentInstance;
 
     public FirebaseHelper() {
@@ -43,6 +43,7 @@ public class FirebaseHelper {
     }
 
     public static FirebaseHelper getInstance(){
+        Log.d(TAG, "newInstance");
         if (currentInstance  == null){
             currentInstance = new FirebaseHelper();
         }
@@ -311,10 +312,6 @@ public class FirebaseHelper {
 
     public void closeDebate(){
         DatabaseReference db = mFirebaseDatabaseReference.child("debates");
-        if (currentChildEventListener != null) {
-            db.child(currentdebate.getKey()).child("messages").removeEventListener(currentChildEventListener);
-            currentChildEventListener = null;
-        }
         currentdebate = null;
         runTimerAllowed = false;
     }
@@ -435,12 +432,14 @@ public class FirebaseHelper {
         currentMainActivity = mainActivity;
         DatabaseReference db = mFirebaseDatabaseReference.child("debates");
         if (currentChildEventListener != null) {
+            Log.d(TAG, "removedChildEventListener");
             db.removeEventListener(currentChildEventListener);
         }
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     Log.d(TAG, "onChildAdded");
+                    Log.d(TAG, this.toString());
                     String key = dataSnapshot.getKey();
                     int user1Rating = ((Long) dataSnapshot.child("user1Rating").getValue()).intValue();
                     Log.d(TAG, "Rating" + dataSnapshot.child("user1Rating").getValue());

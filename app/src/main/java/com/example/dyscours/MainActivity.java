@@ -86,7 +86,6 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
     @Override
     protected void onResume() {
         super.onResume();
-        reloadDebates();
         Log.d(TAG, "onResume");
     }
 
@@ -143,17 +142,17 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
 
     }
 
-    // TODO: FIx this
     public void removeDebate(Debate debate){
         int indexS = findDebate(spectateDebates, debate.getKey(), 0, spectateDebates.size());
-        if (indexS >= 0) {
+        Log.d(TAG,"" + indexS);
+        if (indexS >= 0 && indexS < spectateDebates.size()) {
             if (currentFragment instanceof fragmentSpectate){
                 spectateDebates.remove(indexS);
                 currentFragment.updateViewRemoved(indexS);
             }
         }
         int indexP = findDebate(participateDebates, debate.getKey(), 0, participateDebates.size());
-        if (indexP >= 0) {
+        if (indexP >= 0 && indexP < participateDebates.size()) {
             if (currentFragment instanceof fragmentParticipate){
                 participateDebates.remove(indexP);
                 currentFragment.updateViewRemoved(indexP);
@@ -162,11 +161,8 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
     }
 
     private int findDebate(ArrayList<Debate> debates, String key, int start, int end){
-        if (start > end || start >= debates.size()){
+        if (start > end || start >= debates.size() || end <= 0){
             return -1;
-        }
-        if (start == end){
-            return start;
         }
         int check = (start + end)/2;
         int compare = debates.get(check).getKey().compareTo(key);
