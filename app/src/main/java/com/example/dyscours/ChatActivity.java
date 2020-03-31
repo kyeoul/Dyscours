@@ -154,16 +154,16 @@ public class ChatActivity extends AppCompatActivity {
 
     public void wrapUp(){
         if (isParticipate) {
-            String key = firebaseHelper.getCurrentdebate().getKey();
+            final String key = firebaseHelper.getCurrentdebate().getKey();
             DatabaseReference db = firebaseHelper.getmFirebaseDatabaseReference();
             db.child("debates").child(key).child("isClosed").setValue(true);
             final ChatActivity finalThis = this;
             ValueEventListener user2JoinedListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.getValue() == null || !((Boolean) dataSnapshot.getValue()).booleanValue()){
-                        firebaseHelper.deleteDebate();
-                        firebaseHelper.closeDebate();
+                    if (!dataSnapshot.exists() || !((Boolean) dataSnapshot.getValue()).booleanValue()){
+                        firebaseHelper.deleteDebate(key);
+                        firebaseHelper.closeDebate(key);
                         return;
                     }
                     Intent intent = new Intent(finalThis, FinishedActivity.class);

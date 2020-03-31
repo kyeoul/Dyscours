@@ -310,15 +310,16 @@ public class FirebaseHelper {
         });
     }
 
-    public void closeDebate(){
-        DatabaseReference db = mFirebaseDatabaseReference.child("debates");
-        currentdebate = null;
+    public void closeDebate(String key){
+        if (currentdebate != null && currentdebate.getKey().equals(key)) {
+            DatabaseReference db = mFirebaseDatabaseReference.child("debates");
+            currentdebate = null;
+        }
         runTimerAllowed = false;
     }
 
-    public void deleteDebate(){
+    public void deleteDebate(final String key){
         final DatabaseReference db = mFirebaseDatabaseReference;
-        final String key = currentdebate.getKey();
         db.child("debates").child(key).setValue(null, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
@@ -407,8 +408,8 @@ public class FirebaseHelper {
                             oldScore = ((Long) dataSnapshot.getValue()).intValue();
                         }
                         dbN.child("score").setValue(oldScore + averageRating);
-                        finalThis.deleteDebate();
-                        finalThis.closeDebate();
+                        finalThis.deleteDebate(finalCurrentDebate.getKey());
+                        finalThis.closeDebate(finalCurrentDebate.getKey());
                     }
 
                     @Override

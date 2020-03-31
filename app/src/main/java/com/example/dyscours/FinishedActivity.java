@@ -29,21 +29,12 @@ public class FinishedActivity extends AppCompatActivity {
     }
 
     public void onHomeClick(View v){
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
         finish();
     }
 
     public void onStartClick(){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Creating a debate").setView(R.layout.dialog_add_debate).setPositiveButton("Add", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-
-                }
-            }).setNegativeButton("Exit", null);
-            builder.create().show();
-            finish();
+        finish();
+        FirebaseHelper.getInstance().getCurrentMainActivity().setAddDebateOnResume(true);
     }
 
     @Override

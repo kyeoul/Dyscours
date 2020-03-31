@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
@@ -18,6 +20,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.widget.Adapter;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
     private DyscoursFragment currentFragment;
     private ArrayList<Debate> participateDebates;
     private ArrayList<Debate> spectateDebates;
+    private boolean addDebateOnResume;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
             loadFragment();
         }
 
+        addDebateOnResume = false;
 
         getOverflowMenu();
 
@@ -86,6 +91,10 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
     @Override
     protected void onResume() {
         super.onResume();
+        if (addDebateOnResume) {
+            dialogBuilder();
+            addDebateOnResume = false;
+        }
         Log.d(TAG, "onResume");
     }
 
@@ -161,7 +170,7 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
     }
 
     private int findDebate(ArrayList<Debate> debates, String key, int start, int end){
-        if (start > end || start >= debates.size() || end <= 0){
+        if (start >= end || start >= debates.size() || end <= 0){
             return -1;
         }
         int check = (start + end)/2;
@@ -175,6 +184,31 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         else {
             return check;
         }
+    }
+
+    public void dialogBuilder(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final MainActivity finalThis = this;
+        final View finalView = finalThis.getLayoutInflater().inflate(R.layout.dialog_add_debate, null);
+        builder.setTitle("Creating a debate").setView(finalView).setPositiveButton("Add", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                EditText opinionEditText = finalView.findViewById(R.id.opinionEditText);
+                String debateName = opinionEditText.getText().toString();
+                if (debateName == null || debateName.isEmpty()){
+                    return;
+                }
+                Debate debate = new Debate(opinionEditText.getText().toString(), 20);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ChatActivity.DEBATE_VALUE, debate);
+                bundle.putBoolean(ChatActivity.IS_PARTICIPATE, true);
+                bundle.putBoolean(ChatActivity.IS_USER_1, true);
+                Intent intent = new Intent(finalThis, ChatActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        }).setNegativeButton("Exit", null);
+        builder.create().show();
     }
 
     //Menu Shenanigans
@@ -260,5 +294,13 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
 
     public void setSpectateDebates(ArrayList<Debate> spectateDebates) {
         this.spectateDebates = spectateDebates;
+    }
+
+    public boolean isAddDebateOnResume() {
+        return addDebateOnResume;
+    }
+
+    public void setAddDebateOnResume(boolean addDebateOnResume) {
+        this.addDebateOnResume = addDebateOnResume;
     }
 }
