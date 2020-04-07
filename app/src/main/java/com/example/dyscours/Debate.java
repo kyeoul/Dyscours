@@ -20,6 +20,7 @@ public class Debate implements Serializable {
     private boolean isOpenForParticipate;
     private boolean isClosed;
     private boolean hasUser2Joined;
+    private long timeStart;
 
     /**
      * starting a debate
@@ -178,5 +179,13 @@ public class Debate implements Serializable {
 
     public String toString(){
         return getKey() + getDebateName() + getUserId();
+    }
+
+    public long getTimeStart() {
+        return timeStart;
+    }
+
+    public void setTimeStart(long timeStart) {
+        this.timeStart = timeStart;
     }
 }
