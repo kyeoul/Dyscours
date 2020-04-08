@@ -58,11 +58,13 @@ public class TopicRecyclerAdapter extends RecyclerView.Adapter<TopicRecyclerAdap
     public void onBindViewHolder(MyViewHolder holder, int position){
         TextView userText = holder.viewGroup.findViewById(R.id.debateName);
         TextView ratingText = holder.viewGroup.findViewById(R.id.debateUserRating);
+
         final Debate debate = debateArrayList.get(position);
         String debateName = debate.getDebateName();
         int debateUserRating = debate.getUser1Rating();
         userText.setText(debateName);
-        ratingText.setText(Integer.toString(debateUserRating));
+        String string = "Rating: " + Integer.toString(debateUserRating);
+        ratingText.setText(string);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

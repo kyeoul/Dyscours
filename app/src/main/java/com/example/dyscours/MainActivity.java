@@ -9,9 +9,11 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
@@ -22,6 +24,7 @@ import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.NumberPicker;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +35,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import org.w3c.dom.Text;
 
+import java.awt.font.NumericShaper;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -188,6 +192,7 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
 
     public void dialogBuilder(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         final MainActivity finalThis = this;
         final View finalView = finalThis.getLayoutInflater().inflate(R.layout.dialog_add_debate, null);
         builder.setTitle("Creating a debate").setView(finalView).setPositiveButton("Add", new DialogInterface.OnClickListener() {
@@ -206,6 +211,28 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
                 Intent intent = new Intent(finalThis, ChatActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
+
+                String[] values = new String[60];
+                for(int j = 0; j < 60; j++){
+                    values[j] = Integer.toString(j);
+                }
+
+                final NumberPicker numberMinutePicker = (NumberPicker) finalView.findViewById(R.id.minutePicker);
+                numberMinutePicker.setMaxValue(59);
+                numberMinutePicker.setMinValue(0);
+                numberMinutePicker.setValue(0);
+                numberMinutePicker.setDisplayedValues(values);
+                numberMinutePicker.setWrapSelectorWheel(true);
+
+                final NumberPicker numberSecondPicker = (NumberPicker) finalView.findViewById(R.id.secondPicker);
+                numberSecondPicker.setMaxValue(59);
+                numberSecondPicker.setMinValue(0);
+                numberSecondPicker.setValue(0);
+                numberSecondPicker.setDisplayedValues(values);
+                numberSecondPicker.setWrapSelectorWheel(true);
+
+
+
             }
         }).setNegativeButton("Exit", null);
         builder.create().show();
