@@ -18,4 +18,6 @@
     <string name="participantOpinionString">What is your opinion on this matter?</string>
     <string name="joinString">Join Chat</string>
     <string name="messageString">Type message here...</string>
+    <string name="addDebateDialogTimeLimitString">Time Limit</string>
+    <string name="addDebateDialogTimeLimitEditTextDefaultString">5:00</string>
 </resources>

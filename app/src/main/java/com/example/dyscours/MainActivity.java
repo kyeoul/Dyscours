@@ -3,9 +3,11 @@ package com.example.dyscours;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.app.AlertDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,6 +29,7 @@ import android.widget.ListView;
 import android.widget.NumberPicker;
 import android.widget.PopupMenu;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -40,6 +43,8 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
+import javax.xml.datatype.Duration;
+
 public class MainActivity extends AppCompatActivity implements fragmentSpectate.OnFragmentInteractionListener, fragmentParticipate.OnFragmentInteractionListener {
     public static final String TAG = "TagMainActivity";
     private FirebaseHelper firebaseHelper;
@@ -47,9 +52,13 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
     private ArrayList<Debate> participateDebates;
     private ArrayList<Debate> spectateDebates;
     private boolean addDebateOnResume;
+    private int timeLimit;
+    private AlertDialog currentDialog;
+    public static final int MAX_TIME_LIMIT = 1439;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        timeLimit = 300;
         setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -87,8 +96,6 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         addDebateOnResume = false;
 
         getOverflowMenu();
-
-
 
     }
 
@@ -203,7 +210,11 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
                 if (debateName == null || debateName.isEmpty()){
                     return;
                 }
-                Debate debate = new Debate(opinionEditText.getText().toString(), 20);
+                int timeLimit = finalThis.getTimeLimit();
+                if (timeLimit <= 0 || timeLimit > MAX_TIME_LIMIT){
+                    return;
+                }
+                Debate debate = new Debate(opinionEditText.getText().toString(), timeLimit);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(ChatActivity.DEBATE_VALUE, debate);
                 bundle.putBoolean(ChatActivity.IS_PARTICIPATE, true);
@@ -235,7 +246,9 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
 
             }
         }).setNegativeButton("Exit", null);
-        builder.create().show();
+        AlertDialog dialog = builder.create();
+        dialog.show();
+        currentDialog = dialog;
     }
 
     //Menu Shenanigans
@@ -248,6 +261,26 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
 //    }
 
     public void onClickPopup(View v){showPopup(v, R.style.Widget_AppCompat_Light_PopupMenu);}
+
+   public void addDebateOnClick(View v){
+        final MainActivity finalThis = this;
+        DurationPicker durationPicker = new DurationPicker(this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int minutes, int seconds) {
+                finalThis.setTimeLimit(minutes, seconds);
+            }
+        }, 5, 0);
+        durationPicker.show();
+   }
+
+   public void setTimeLimit(int minutes, int seconds){
+        if (currentDialog != null && currentDialog.isShowing()) {
+            timeLimit = 60 * minutes + seconds;
+            EditText timeLimitEditText = currentDialog.findViewById(R.id.timeLimitEditText);
+            String out = minutes + (seconds < 10 ? ":0" : ":") + seconds;
+            timeLimitEditText.setText(out);
+        }
+   }
 
     public void showPopup(View v, int style){
         Context wrapper = new ContextThemeWrapper(this, style);
@@ -329,5 +362,13 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
 
     public void setAddDebateOnResume(boolean addDebateOnResume) {
         this.addDebateOnResume = addDebateOnResume;
+    }
+
+    public int getTimeLimit() {
+        return timeLimit;
+    }
+
+    public void setTimeLimit(int timeLimit) {
+        this.timeLimit = timeLimit;
     }
 }

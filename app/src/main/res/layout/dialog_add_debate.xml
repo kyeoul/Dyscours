@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="300dp"
-    android:layout_height="wrap_content">
+    android:layout_height="200dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,7 +13,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/opinionPromptString"/>
+            android:text="@string/opinionPromptString" />
 
         <EditText
             android:id="@+id/opinionEditText"
@@ -22,26 +23,25 @@
             android:paddingBottom="@dimen/smallPadding"
             android:textSize="@dimen/smallText" />
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="30dp"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:theme="@style/materialTheme">
+            android:text="@string/addDebateDialogTimeLimitString" />
 
-            <NumberPicker
-                android:id="@+id/minutePicker"
-                android:layout_width="wrap_content"
-                android:layout_height="90dp"
-                android:layout_marginRight="60dp"/>
+        <EditText
+            android:id="@+id/timeLimitEditText"
+            android:layout_width="250dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_horizontal"
+            android:clickable="true"
+            android:cursorVisible="false"
+            android:editable="false"
+            android:focusable="false"
+            android:onClick="addDebateOnClick"
+            android:paddingBottom="@dimen/smallPadding"
+            android:textSize="@dimen/smallText"
+            tools:text="@string/addDebateDialogTimeLimitEditTextDefaultString" />
 
-            <NumberPicker
-                android:id="@+id/secondPicker"
-                android:layout_width="wrap_content"
-                android:layout_height="90dp" />
-
-        </LinearLayout>
     </LinearLayout>
-
 </ScrollView>

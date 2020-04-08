@@ -1,5 +1,6 @@
 package com.example.dyscours;
 
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.renderscript.Sampler;
 import android.util.Log;
@@ -162,6 +163,7 @@ public class FirebaseHelper {
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 putUserRatingInDebate();
                 db.child(key).child("isOpenForParticipate").setValue(false);
+                db.child(key).child("timeStart").setValue(ServerValue.TIMESTAMP);
                 db.child(key).child("hasUser2Joined").setValue(true);
                 finalThis.listenForClosedDebate(chatActivity);
             }
@@ -273,12 +275,44 @@ public class FirebaseHelper {
 
             }
         });
-
+        final FirebaseHelper finalThis = this;
         db.child(key).child("hasUser2Joined").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null && ((Boolean)dataSnapshot.getValue()).booleanValue()) {
-                    startClock(debate.getTimeLimit(), chatActivity);
+                    db.child(key).child("timeStart").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            debate.setTimeStart(((Long) dataSnapshot.getValue()).longValue());
+                            final String tempKey = db.child(key).push().getKey();
+                            db.child(key).child(tempKey).setValue(ServerValue.TIMESTAMP, new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                                    db.child(key).child(tempKey).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.getValue() != null) {
+                                                long nowTime = ((Long) dataSnapshot.getValue()).longValue();
+                                                int offset = (int) ((nowTime - debate.getTimeStart()) / 1000.0);
+                                                Log.d(TAG, offset + "");
+                                                finalThis.startClock(debate.getTimeLimit() - offset, chatActivity);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                     db.child(key).removeEventListener(this);
                 }
             }
