@@ -227,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
                 for(int j = 0; j < 60; j++){
                     values[j] = Integer.toString(j);
                 }
-
+                /**
                 final NumberPicker numberMinutePicker = (NumberPicker) finalView.findViewById(R.id.minutePicker);
                 numberMinutePicker.setMaxValue(59);
                 numberMinutePicker.setMinValue(0);
@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
                 numberSecondPicker.setValue(0);
                 numberSecondPicker.setDisplayedValues(values);
                 numberSecondPicker.setWrapSelectorWheel(true);
-
+                **/
 
 
             }

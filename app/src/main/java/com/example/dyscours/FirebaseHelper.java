@@ -2,6 +2,7 @@ package com.example.dyscours;
 
 import android.media.MediaPlayer;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.renderscript.Sampler;
 import android.util.Log;
 
@@ -130,12 +131,43 @@ public class FirebaseHelper {
 
             }
         });
+        final DatabaseReference timeDb = mFirebaseDatabaseReference.child("time");
         db.child(key).child("hasUser2Joined").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null && ((Boolean)dataSnapshot.getValue()).booleanValue()) {
-                    startClock(debate.getTimeLimit(), chatActivity);
-                    db.child(key).removeEventListener(this);
+                    db.child(key).child("timeStart").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            debate.setTimeStart(((Long) dataSnapshot.getValue()).longValue());
+                            final String tempKey = timeDb.push().getKey();
+                            timeDb.child(tempKey).setValue(ServerValue.TIMESTAMP, new DatabaseReference.CompletionListener() {
+                                @Override
+                                public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                                    timeDb.child(tempKey).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.getValue() != null) {
+                                                long nowTime = ((Long) dataSnapshot.getValue()).longValue();
+                                                int offset = (int) ((nowTime - debate.getTimeStart()) / 1000.0);
+                                                Log.d(TAG, offset + "");
+                                                finalThis.startClock(debate.getTimeLimit() - offset, chatActivity);
+                                                timeDb.child(tempKey).setValue(null);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+                        }
+                    });
                 }
             }
 
@@ -143,6 +175,7 @@ public class FirebaseHelper {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         });
         return true;
     }
@@ -163,12 +196,16 @@ public class FirebaseHelper {
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
                 putUserRatingInDebate();
                 db.child(key).child("isOpenForParticipate").setValue(false);
-                db.child(key).child("timeStart").setValue(ServerValue.TIMESTAMP);
+                db.child(key).child("timeStart").setValue(ServerValue.TIMESTAMP, new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                        startClock(debate.getTimeLimit(), chatActivity);
+                    }
+                });
                 db.child(key).child("hasUser2Joined").setValue(true);
                 finalThis.listenForClosedDebate(chatActivity);
             }
         });
-        startClock(debate.getTimeLimit(), chatActivity);
         debate.setOpenForParticipate(false);
         db.child(key).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -276,6 +313,7 @@ public class FirebaseHelper {
             }
         });
         final FirebaseHelper finalThis = this;
+        final DatabaseReference timeDb = mFirebaseDatabaseReference.child("time");
         db.child(key).child("hasUser2Joined").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -284,11 +322,11 @@ public class FirebaseHelper {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             debate.setTimeStart(((Long) dataSnapshot.getValue()).longValue());
-                            final String tempKey = db.child(key).push().getKey();
-                            db.child(key).child(tempKey).setValue(ServerValue.TIMESTAMP, new DatabaseReference.CompletionListener() {
+                            final String tempKey = timeDb.push().getKey();
+                            timeDb.child(tempKey).setValue(ServerValue.TIMESTAMP, new DatabaseReference.CompletionListener() {
                                 @Override
                                 public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
-                                    db.child(key).child(tempKey).addValueEventListener(new ValueEventListener() {
+                                    timeDb.child(tempKey).addValueEventListener(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             if (dataSnapshot.getValue() != null) {
@@ -296,6 +334,7 @@ public class FirebaseHelper {
                                                 int offset = (int) ((nowTime - debate.getTimeStart()) / 1000.0);
                                                 Log.d(TAG, offset + "");
                                                 finalThis.startClock(debate.getTimeLimit() - offset, chatActivity);
+                                                timeDb.child(tempKey).setValue(null);
                                             }
                                         }
 
