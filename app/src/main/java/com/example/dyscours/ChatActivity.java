@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -75,9 +76,16 @@ public class ChatActivity extends AppCompatActivity {
             chatText.setHint("You're Spectating! Wait until the chat is over...");
             Button send = findViewById(R.id.messageButton);
             send.setVisibility(View.INVISIBLE);
+            LinearLayout linearLayout = findViewById(R.id.linearLayout);
+            linearLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    firebaseHelper.applaud();
+                }
+            });
             firebaseHelper.spectateDebate(debate, this);
         }
-
+        firebaseHelper.addApplauseListener(this);
         messages = new ArrayList<Message>();
 
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
@@ -138,6 +146,10 @@ public class ChatActivity extends AppCompatActivity {
 
     public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
         this.layoutManager = layoutManager;
+    }
+
+    public void applaud(){
+        Toast.makeText(this, "Applause", Toast.LENGTH_SHORT).show();
     }
 
     public void updateTimer(int seconds){
