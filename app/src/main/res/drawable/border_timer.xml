@@ -2,7 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
         <shape
-            android:innerRadius="28dp"
+            android:innerRadius="25dp"
             android:shape="ring"
             android:thickness="2dp"
             android:useLevel="false">
@@ -14,7 +14,16 @@
                 android:endColor="@color/colorPrimaryDark"
                 android:gradientRadius="120"
                 android:type="sweep" />
+        </shape>
+    </item>
 
+    <item
+        android:left="2dp"
+        android:right="2dp"
+        android:top="2dp"
+        android:bottom="2dp">
+        <shape android:shape="oval">
+            <solid android:color="@android:color/white" />
         </shape>
     </item>
 

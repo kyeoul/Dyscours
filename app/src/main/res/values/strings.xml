@@ -4,11 +4,12 @@
     <string name="productiveString">How productive was your discussion?</string>
     <string name="poorString">Poor</string>
     <string name="amazingString">Amazing</string>
-    <string name="browseString">Back to home screen</string>
-    <string name="homeString">Start a conversation</string>
+    <string name="browseString">Submit and Back to Home</string>
+    <string name="homeString">Submit and Start a conversation</string>
     <string name="topicPromptString">Debate topic</string>
     <string name="opinionPromptString">Opinion</string>
     <string name="ratingString">Rating </string>
+    <string name="infoTitleString">Debate Information:</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
