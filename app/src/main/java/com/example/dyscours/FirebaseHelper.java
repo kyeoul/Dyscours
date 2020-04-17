@@ -180,6 +180,45 @@ public class FirebaseHelper {
         return true;
     }
 
+    public void addApplauseListener(final ChatActivity chatActivity){
+        if (currentdebate == null){
+            return;
+        }
+        mFirebaseDatabaseReference.child("debates").child(currentdebate.getKey()).child("applause").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                chatActivity.applaud();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void applaud(){
+        if (currentdebate == null){
+            return;
+        }
+        mFirebaseDatabaseReference.child("debates").child(currentdebate.getKey()).child("applause").push().setValue(true);
+    }
+
     public boolean joinDebate(final Debate debate, final ChatActivity chatActivity){
         if (debate.getKey() == null){
             return false;
