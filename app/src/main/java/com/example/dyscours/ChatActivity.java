@@ -83,6 +83,12 @@ public class ChatActivity extends AppCompatActivity {
                     firebaseHelper.applaud();
                 }
             });
+            chatText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    firebaseHelper.applaud();
+                }
+            });
             firebaseHelper.spectateDebate(debate, this);
         }
         firebaseHelper.addApplauseListener(this);

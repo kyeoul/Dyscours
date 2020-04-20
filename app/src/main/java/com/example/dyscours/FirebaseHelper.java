@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.provider.ContactsContract;
 import android.renderscript.Sampler;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -152,6 +153,7 @@ public class FirebaseHelper {
                                                 int offset = (int) ((nowTime - debate.getTimeStart()) / 1000.0);
                                                 Log.d(TAG, offset + "");
                                                 finalThis.startClock(debate.getTimeLimit() - offset, chatActivity);
+                                                Toast.makeText(chatActivity, "Someone has joined your debate. Start talking!", Toast.LENGTH_SHORT).show();
                                                 timeDb.child(tempKey).setValue(null);
                                             }
                                         }
@@ -372,6 +374,7 @@ public class FirebaseHelper {
                                                 long nowTime = ((Long) dataSnapshot.getValue()).longValue();
                                                 int offset = (int) ((nowTime - debate.getTimeStart()) / 1000.0);
                                                 Log.d(TAG, offset + "");
+                                                Toast.makeText(chatActivity, "User 2 has joined. The debate is beginning!", Toast.LENGTH_SHORT).show();
                                                 finalThis.startClock(debate.getTimeLimit() - offset, chatActivity);
                                                 timeDb.child(tempKey).setValue(null);
                                             }
@@ -410,6 +413,7 @@ public class FirebaseHelper {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() != null && ((Boolean)dataSnapshot.getValue()).booleanValue()){
                     if (chatActivity != null && !chatActivity.isDestroyed()){
+                        Toast.makeText(chatActivity, "The debate has ended prematurely.", Toast.LENGTH_SHORT).show();
                         chatActivity.finish();
                     }
                 }
