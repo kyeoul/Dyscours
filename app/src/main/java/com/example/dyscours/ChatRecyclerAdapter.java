@@ -60,7 +60,7 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         TextView contentTextView = holder.viewGroup.findViewById(R.id.messageContentTextView);
         contentTextView.setText(mDataset.get(position).getContent());
         int user = chatActivity.getFirebaseHelper().getCurrentdebate().isUser1() ? 1 : 2;
-        if (mDataset.get(position).getUser() == user) {
+        if (mDataset.get(position).getUser() != user) {
             contentTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
             contentTextView.setBackground(chatActivity.getResources().getDrawable(R.drawable.the_chat_bubble));
         }

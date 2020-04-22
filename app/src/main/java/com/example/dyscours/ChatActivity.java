@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -45,6 +46,8 @@ public class ChatActivity extends AppCompatActivity {
 
     private boolean isParticipate;
 
+    private MediaPlayer mediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +61,7 @@ public class ChatActivity extends AppCompatActivity {
         isParticipate = intentExtras.getBoolean(IS_PARTICIPATE);
         boolean isUser1 = intentExtras.getBoolean(IS_USER_1);
         timeView = findViewById(R.id.timerTextView);
+        mediaPlayer = MediaPlayer.create(this, R.raw.clapping1);
 
         if (isParticipate && !isUser1){
             Log.d(TAG, "chatJoin");
@@ -155,7 +159,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void applaud(){
-        Toast.makeText(this, "Applause", Toast.LENGTH_SHORT).show();
+        mediaPlayer.start();
     }
 
     public void updateTimer(int seconds){

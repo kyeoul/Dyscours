@@ -555,6 +555,7 @@ public class FirebaseHelper {
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+                try {
                     Log.d(TAG, "onChildAdded");
                     Log.d(TAG, this.toString());
                     String key = dataSnapshot.getKey();
@@ -566,6 +567,10 @@ public class FirebaseHelper {
                     boolean isClosed = ((Boolean) dataSnapshot.child("isClosed").getValue()).booleanValue();
                     mainActivity.addDebate(new Debate(key, debateName, user1Rating, timeLimit, isOpenForParticipate, isClosed));
                     Log.d(TAG, "onChildAddedf");
+                }
+                catch (Exception e){
+                    e.fillInStackTrace();
+                }
             }
 
             @Override
