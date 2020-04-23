@@ -10,7 +10,15 @@
         layout = "@layout/toolbar_main"
         android:id="@+id/toolbarChat" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/toolbarChat"
+        app:layout_constraintBottom_toBottomOf="@id/toolbarChat"
+        app:layout_constraintLeft_toLeftOf="@id/toolbarChat"/>
+
     <ImageButton
+        android:id="@+id/infoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"

@@ -24,22 +24,10 @@
             style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
             android:textColor="#FFFFFF"
             android:layout_height="wrap_content"
-            android:text="@string/toolbarDebateString"
+            android:text="@string/app_name"
             android:layout_gravity="center_vertical"
             android:layout_centerVertical="true"
             android:layout_weight="1" />
-
-        <Button
-            android:id="@+id/leaveButton"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="10dp"
-            android:text="@string/leaveString"
-            android:background="#FFFFFF"
-            android:textColor="@color/colorRed"
-            android:onClick="onLeaveClick"/>
 
     </RelativeLayout>
 </androidx.appcompat.widget.Toolbar>

@@ -199,7 +199,6 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
 
     public void dialogBuilder(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         final MainActivity finalThis = this;
         final View finalView = finalThis.getLayoutInflater().inflate(R.layout.dialog_add_debate, null);
         builder.setTitle("Creating a debate").setView(finalView).setPositiveButton("Add", new DialogInterface.OnClickListener() {
@@ -222,27 +221,6 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
                 Intent intent = new Intent(finalThis, ChatActivity.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
-
-                String[] values = new String[60];
-                for(int j = 0; j < 60; j++){
-                    values[j] = Integer.toString(j);
-                }
-                /**
-                final NumberPicker numberMinutePicker = (NumberPicker) finalView.findViewById(R.id.minutePicker);
-                numberMinutePicker.setMaxValue(59);
-                numberMinutePicker.setMinValue(0);
-                numberMinutePicker.setValue(0);
-                numberMinutePicker.setDisplayedValues(values);
-                numberMinutePicker.setWrapSelectorWheel(true);
-
-                final NumberPicker numberSecondPicker = (NumberPicker) finalView.findViewById(R.id.secondPicker);
-                numberSecondPicker.setMaxValue(59);
-                numberSecondPicker.setMinValue(0);
-                numberSecondPicker.setValue(0);
-                numberSecondPicker.setDisplayedValues(values);
-                numberSecondPicker.setWrapSelectorWheel(true);
-                **/
-
 
             }
         }).setNegativeButton("Exit", null);

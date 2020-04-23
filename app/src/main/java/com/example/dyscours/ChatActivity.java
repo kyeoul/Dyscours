@@ -1,17 +1,20 @@
 package com.example.dyscours;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,6 +62,16 @@ public class ChatActivity extends AppCompatActivity {
         boolean isUser1 = intentExtras.getBoolean(IS_USER_1);
         timeView = findViewById(R.id.timerTextView);
 
+        String debateName = debate.getDebateName();
+        if(debateName.length() > 25){
+            debateName = debateName.substring(0,25);
+            debateName += "...";
+        }
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        TextView title = toolbar.findViewById(R.id.titleText);
+        title.setText(debateName);
+
         if (isParticipate && !isUser1){
             Log.d(TAG, "chatJoin");
             firebaseHelper.joinDebate(debate, this);
@@ -95,6 +108,17 @@ public class ChatActivity extends AppCompatActivity {
         mAdapter = new ChatRecyclerAdapter(messages, this);
         recyclerView.setAdapter(mAdapter);
 
+        ImageButton button = (ImageButton) findViewById(R.id.infoButton);
+        button.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                dialogBuilder();
+            }
+        });
+
+    }
+
+    public void createDialogBox(){
 
     }
 
@@ -196,5 +220,22 @@ public class ChatActivity extends AppCompatActivity {
     protected void onStop() {
         wrapUp();
         super.onStop();
+    }
+
+    public void dialogBuilder(){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        final View finalView = getLayoutInflater().inflate(R.layout.dialog_debate_info, null);
+        alertDialogBuilder.setTitle("Debate Information").setView(finalView).setNegativeButton("Back", null)
+                .setPositiveButton("Leave", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(ChatActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                }
+                );
+        AlertDialog dialog = alertDialogBuilder.create();
+        dialog.show();
+
     }
 }

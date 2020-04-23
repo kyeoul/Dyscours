@@ -61,14 +61,17 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         contentTextView.setText(mDataset.get(position).getContent());
         int user = chatActivity.getFirebaseHelper().getCurrentdebate().isUser1() ? 1 : 2;
         if (mDataset.get(position).getUser() == user) {
-            contentTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            contentTextView.setBackground(chatActivity.getResources().getDrawable(R.drawable.the_chat_bubble));
+            contentTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
+            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentTextView.getLayoutParams();
+            contentTextView.setBackground(chatActivity.getResources().getDrawable(R.drawable.that_chat_bubble));
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_END);
+            contentTextView.setLayoutParams(layoutParams);
         }
         else {
             contentTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            contentTextView.setBackground(chatActivity.getResources().getDrawable(R.drawable.that_chat_bubble));
+            contentTextView.setBackground(chatActivity.getResources().getDrawable(R.drawable.the_chat_bubble));
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentTextView.getLayoutParams();
-            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_END);
+            layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
             contentTextView.setLayoutParams(layoutParams);
         }
     }
