@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="30dp">
 
@@ -11,6 +13,8 @@
         android:text="@string/fillerString"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         />
 
     <TextView
@@ -18,8 +22,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_marginTop="40dp"
+        android:text="@string/fillerString"
+        android:textColor="@color/colorSide"
+        app:layout_constraintTop_toTopOf="@+id/debateName"
+        app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/debateTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/debateUserRating"
+        app:layout_constraintLeft_toLeftOf="@+id/debateUserRating"
         android:layout_marginTop="30dp"
         android:text="@string/fillerString"
         android:textColor="@color/colorSide"/>
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
