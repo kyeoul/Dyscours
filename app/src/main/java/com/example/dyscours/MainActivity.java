@@ -16,6 +16,7 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
@@ -291,6 +292,11 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
             FirebaseAuth.getInstance().signOut();
 
             Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        else if (id == R.id.action_settings){
+            Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             return true;
         }
