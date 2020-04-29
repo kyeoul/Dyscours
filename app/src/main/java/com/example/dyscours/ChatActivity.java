@@ -38,6 +38,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Message> messages;
     private TextView timeView;
+    private Settings settings;
 
     public static final int JOIN = 2;
     public static final int START = 1;
@@ -64,7 +65,8 @@ public class ChatActivity extends AppCompatActivity {
         isParticipate = intentExtras.getBoolean(IS_PARTICIPATE);
         boolean isUser1 = intentExtras.getBoolean(IS_USER_1);
         timeView = findViewById(R.id.timerTextView);
-        mediaPlayer = MediaPlayer.create(this, R.raw.clapping1);
+        settings = firebaseHelper.getSettings();
+        mediaPlayer = settings.isApplauseOn() ? MediaPlayer.create(this, R.raw.clapping1) : null;
 
         String debateName = debate.getDebateName();
         if(debateName.length() > 25){
@@ -86,7 +88,6 @@ public class ChatActivity extends AppCompatActivity {
             firebaseHelper.startDebate(debate, this);
         }
         if (!isParticipate){
-            // TO DO: FINISH PARTICIPATE
             Log.d(TAG, "participateStart");
             EditText chatText = findViewById(R.id.messageEditText);
             chatText.setFocusable(false);
@@ -183,7 +184,9 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     public void applaud(){
-        mediaPlayer.start();
+        if (settings.isApplauseOn()){
+            mediaPlayer.start();
+        }
     }
 
     public void updateTimer(int seconds){

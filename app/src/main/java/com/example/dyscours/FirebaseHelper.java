@@ -37,12 +37,14 @@ public class FirebaseHelper {
     private static MainActivity currentMainActivity;
     private static ChildEventListener currentChildEventListener;
     private static FirebaseHelper currentInstance;
+    private static Settings currentSettings;
 
     public FirebaseHelper() {
         mFirebaseDatabaseReference = FirebaseDatabase.getInstance().getReference();
         currentdebate = null;
         currentChildEventListener = null;
         runTimerAllowed = true;
+        updateSettings();
     }
 
     public static FirebaseHelper getInstance(){
@@ -599,6 +601,46 @@ public class FirebaseHelper {
         return true;
     }
 
+    public void updateSettings (){
+        DatabaseReference db = mFirebaseDatabaseReference.child("users").child(getUserId()).child("settings");
+        final FirebaseHelper finalThis = this;
+        db.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() == null){
+                    setSettings(new Settings());
+                    finalThis.setCurrentSettings(new Settings());
+                    return;
+                }
+                boolean isColorRed = ((Boolean) dataSnapshot.child("isColorRed").getValue()).booleanValue();
+                boolean isApplauseOn = ((Boolean) dataSnapshot.child("isApplauseOn").getValue()).booleanValue();
+                finalThis.setCurrentSettings(new Settings(isColorRed, isApplauseOn));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void setSettings(Settings settings){
+        DatabaseReference db = mFirebaseDatabaseReference.child("users").child(getUserId()).child("settings");
+        Map<String, Object> newData = new HashMap<>();
+        newData.put("isColorRed", settings.isColorRed());
+        newData.put("isApplauseOn", settings.isApplauseOn());
+        db.setValue(newData, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {
+                updateSettings();
+            }
+        });
+    }
+
+    public Settings getSettings(){
+        return getCurrentSettings();
+    }
+
     public void startClock(final int timeLimit, final ChatActivity chatActivity){
         if (!runTimerAllowed)
             return;
@@ -661,5 +703,13 @@ public class FirebaseHelper {
 
     public static void setCurrentInstance(FirebaseHelper currentInstance) {
         FirebaseHelper.currentInstance = currentInstance;
+    }
+
+    public static Settings getCurrentSettings() {
+        return currentSettings;
+    }
+
+    public static void setCurrentSettings(Settings currentSettings) {
+        FirebaseHelper.currentSettings = currentSettings;
     }
 }

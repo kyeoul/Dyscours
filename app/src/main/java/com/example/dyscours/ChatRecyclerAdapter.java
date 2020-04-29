@@ -20,6 +20,8 @@ import java.util.ArrayList;
 public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapter.ChatViewHolder> {
     private ArrayList<Message> mDataset;
     private ChatActivity chatActivity;
+    private FirebaseHelper firebaseHelper;
+    private Settings settings;
     Context context;
 
     // Provide a reference to the views for each data item
@@ -38,6 +40,8 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
     public ChatRecyclerAdapter(ArrayList<Message> myDataset, ChatActivity chatActivity) {
         mDataset = myDataset;
         this.chatActivity = chatActivity;
+        firebaseHelper = FirebaseHelper.getInstance();
+        settings = firebaseHelper.getSettings();
     }
 
     // Create new views (invoked by the layout manager)
@@ -63,13 +67,13 @@ public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapte
         if (mDataset.get(position).getUser() == user) {
             contentTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_END);
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentTextView.getLayoutParams();
-            contentTextView.setBackground(chatActivity.getResources().getDrawable(R.drawable.that_chat_bubble));
+            contentTextView.setBackground(chatActivity.getResources().getDrawable(settings.isColorRed() ? R.drawable.that_chat_bubble : R.drawable.that_chat_bubble_blue));
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_END);
             contentTextView.setLayoutParams(layoutParams);
         }
         else {
             contentTextView.setTextAlignment(View.TEXT_ALIGNMENT_TEXT_START);
-            contentTextView.setBackground(chatActivity.getResources().getDrawable(R.drawable.the_chat_bubble));
+            contentTextView.setBackground(chatActivity.getResources().getDrawable(settings.isColorRed() ? R.drawable.the_chat_bubble : R.drawable.the_chat_bubble_red));
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) contentTextView.getLayoutParams();
             layoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
             contentTextView.setLayoutParams(layoutParams);
