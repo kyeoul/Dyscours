@@ -110,12 +110,10 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onFocusChange(View view, boolean hasFocus) {
                 if(hasFocus){
-                    loginBackground.startTransition(300);
                     changeDrawableTint(getResources().getColor(R.color.colorPrimary), password, getResources().getDrawable(R.drawable.ic_password));
                     cardView.setCardBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 }
                 else{
-                    loginBackground.reverseTransition(300);
                     changeDrawableTint(getResources().getColor(R.color.messageTextColor), password, getResources().getDrawable(R.drawable.ic_password));
                     cardView.setCardBackgroundColor(getResources().getColor(R.color.colorAccent));
                 }
