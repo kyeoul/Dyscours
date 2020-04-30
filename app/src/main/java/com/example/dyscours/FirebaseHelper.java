@@ -669,8 +669,29 @@ public class FirebaseHelper {
         mFirebaseDatabaseReference.child("users").child(uid).child("score").setValue(0);
     }
 
+    public void startUserAccountListener(final UserAccountActivity userAccountActivity){
+        mFirebaseDatabaseReference.child("users").child(getUserId()).child("score").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getValue() == null){
+                    return;
+                }
+                userAccountActivity.setUserScore(((Long) dataSnapshot.getValue()).toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     public String getUserId(){
         return FirebaseAuth.getInstance().getUid();
+    }
+
+    public String getUserEmail(){
+        return FirebaseAuth.getInstance().getCurrentUser().getEmail();
     }
 
     public boolean isRunTimerAllowed() {
