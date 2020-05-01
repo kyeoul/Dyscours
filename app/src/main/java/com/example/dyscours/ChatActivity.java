@@ -94,6 +94,11 @@ public class ChatActivity extends AppCompatActivity {
             Button send = findViewById(R.id.messageButton);
             send.setVisibility(View.INVISIBLE);
             LinearLayout linearLayout = findViewById(R.id.linearLayout);
+
+            /*
+            TODO: Add some way to put the updateTimer function into isParticipate to force it to show the correct time
+             */
+
             linearLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

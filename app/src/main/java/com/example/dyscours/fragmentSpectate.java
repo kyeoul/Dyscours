@@ -95,7 +95,7 @@ public class fragmentSpectate extends DyscoursFragment{
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        //recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         RecyclerView.Adapter adapter = new TopicRecyclerAdapter(arrayList, this, (MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
         topicRecyclerAdapter = adapter;
