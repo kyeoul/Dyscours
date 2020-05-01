@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 /**
+ * This extended Recycler Adapter is used for displaying the messages of a debate
  * https://developer.android.com/guide/topics/ui/layout/recyclerview
  */
 public class ChatRecyclerAdapter extends RecyclerView.Adapter<ChatRecyclerAdapter.ChatViewHolder> {

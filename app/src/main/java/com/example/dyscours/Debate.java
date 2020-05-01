@@ -5,6 +5,9 @@ import android.os.Parcelable;
 
 import java.io.Serializable;
 
+/**
+ * This structure locally holds a lot of important information about a debate
+ */
 public class Debate implements Serializable {
 
     private String debateName;
@@ -23,10 +26,9 @@ public class Debate implements Serializable {
     private long timeStart;
 
     /**
-     * starting a debate
+     * Constructor used when starting a debate
      * @param debateName
      * @param timeLimit
-     * @param user1Rating
      */
     public Debate(String debateName, int timeLimit){
         this.debateName = debateName;
@@ -39,9 +41,8 @@ public class Debate implements Serializable {
     }
 
     /**
-     * joining a debate
+     * Constructor used when joining a debate
      * @param key
-     * @param user2Rating
      */
     public Debate (String key){
         this.userId = null;
@@ -53,12 +54,13 @@ public class Debate implements Serializable {
     }
 
     /**
-     * looking at a debate from the home screen
+     * Constructor when debate information for preview is retrieved from the home screen
      * @param key
      * @param debateName
      * @param user1Rating
      * @param timeLimit
      * @param isOpenForParticipate
+     * @param isClosed
      */
     public Debate(String key, String debateName, int user1Rating, int timeLimit, boolean isOpenForParticipate, boolean isClosed){
         this.key = key;
