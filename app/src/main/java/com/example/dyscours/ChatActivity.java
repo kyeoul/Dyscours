@@ -28,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 /**
+ * Activity where all user chats take place.
  * Recycler view implementation greatly inspired by https://developer.android.com/guide/topics/ui/layout/recyclerview
  */
 public class ChatActivity extends AppCompatActivity {
@@ -38,6 +39,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<Message> messages;
     private TextView timeView;
+    private Settings settings;
 
     public static final int JOIN = 2;
     public static final int START = 1;
@@ -59,34 +61,37 @@ public class ChatActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         firebaseHelper = FirebaseHelper.getInstance();
+        // When creating a chat activity, you need to put extras in your intent
         Bundle intentExtras = getIntent().getExtras();
         Debate debate = (Debate) intentExtras.getSerializable(DEBATE_VALUE);
         isParticipate = intentExtras.getBoolean(IS_PARTICIPATE);
         boolean isUser1 = intentExtras.getBoolean(IS_USER_1);
         timeView = findViewById(R.id.timerTextView);
-        mediaPlayer = MediaPlayer.create(this, R.raw.clapping1);
+        // Dealing with Settings
+        settings = firebaseHelper.getSettings();
+        int applauseSoundResId = ApplauseSound.getResIdFromId(settings.getApplauseSound());
+        mediaPlayer = settings.isApplauseOn() ? MediaPlayer.create(this, applauseSoundResId) : null;
 
+        //Gets debate name and sets it to be the action bar title
         String debateName = debate.getDebateName();
         if(debateName.length() > 25){
             debateName = debateName.substring(0,25);
             debateName += "...";
         }
-
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         TextView title = toolbar.findViewById(R.id.titleText);
         title.setText(debateName);
 
-        if (isParticipate && !isUser1){
+        if (isParticipate && !isUser1){ // CASE: Joining a debate to participate
             Log.d(TAG, "chatJoin");
             firebaseHelper.joinDebate(debate, this);
         }
-        if (isParticipate && isUser1){
+        if (isParticipate && isUser1){ // CASE: Creating a debate to participate
             Log.d(TAG, "chatStart");
             Log.d(TAG, debate.toString());
             firebaseHelper.startDebate(debate, this);
         }
-        if (!isParticipate){
-            // TO DO: FINISH PARTICIPATE
+        if (!isParticipate){ // CASE: Joining a debate to spectate
             Log.d(TAG, "participateStart");
             EditText chatText = findViewById(R.id.messageEditText);
             chatText.setFocusable(false);
@@ -113,16 +118,17 @@ public class ChatActivity extends AppCompatActivity {
             });
             firebaseHelper.spectateDebate(debate, this);
         }
+        // In all cases, spectators can applaud which will be sent to all privy parties
         firebaseHelper.addApplauseListener(this);
+        // Messaging recycler view initialization
         messages = new ArrayList<Message>();
-
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new ChatRecyclerAdapter(messages, this);
         recyclerView.setAdapter(mAdapter);
-
+        // Info button
         ImageButton button = (ImageButton) findViewById(R.id.infoButton);
         button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -137,11 +143,19 @@ public class ChatActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Adds a message to the local chat Recyclerview
+     * @param message The message to be added to the chat
+     */
     public void addMessage(Message message){
         messages.add(message);
         mAdapter.notifyItemInserted(messages.size() - 1);
     }
 
+    /**
+     * Sends a message from the current user to the current debate in Firebase, based on the content of the message edit text: On Click
+     * @param v The view that is being clicked
+     */
     public void sendMessage(View v){
         EditText contentField = findViewById(R.id.messageEditText);
         String content = contentField.getText().toString().trim();
@@ -155,42 +169,19 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    public FirebaseHelper getFirebaseHelper() {
-        return firebaseHelper;
-    }
-
-    public void setFirebaseHelper(FirebaseHelper firebaseHelper) {
-        this.firebaseHelper = firebaseHelper;
-    }
-
-    public RecyclerView getRecyclerView() {
-        return recyclerView;
-    }
-
-    public void setRecyclerView(RecyclerView recyclerView) {
-        this.recyclerView = recyclerView;
-    }
-
-    public RecyclerView.Adapter getmAdapter() {
-        return mAdapter;
-    }
-
-    public void setmAdapter(RecyclerView.Adapter mAdapter) {
-        this.mAdapter = mAdapter;
-    }
-
-    public RecyclerView.LayoutManager getLayoutManager() {
-        return layoutManager;
-    }
-
-    public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
-        this.layoutManager = layoutManager;
-    }
-
+    /**
+     * Plays the applause sound effect locally; called when a spectator privy to the chat (including the current user) clicks on the applause button.
+     */
     public void applaud(){
-        mediaPlayer.start();
+        if (settings.isApplauseOn()){
+            mediaPlayer.start();
+        }
     }
 
+    /**
+     * Updates the local timer, displayed in minutes and seconds
+     * @param seconds The number of seconds to show on the timer
+     */
     public void updateTimer(int seconds){
         Log.d(TAG, "updateTimer");
         int minutes = seconds/60;
@@ -199,10 +190,9 @@ public class ChatActivity extends AppCompatActivity {
         timeView.setText(out);
     }
 
-    public void onLeaveClick(View v){
-        finish();
-    }
-
+    /**
+     * When the activity stops for any reason, this method is called to wrap up the debate.
+     */
     public void wrapUp(){
         if (isParticipate) {
             final String key = firebaseHelper.getCurrentdebate().getKey();
@@ -237,6 +227,9 @@ public class ChatActivity extends AppCompatActivity {
         super.onStop();
     }
 
+    /**
+     * Builds the local debate information dialog
+     */
     public void dialogBuilder(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         final View finalView = getLayoutInflater().inflate(R.layout.dialog_debate_info, null);
@@ -252,5 +245,37 @@ public class ChatActivity extends AppCompatActivity {
         AlertDialog dialog = alertDialogBuilder.create();
         dialog.show();
 
+    }
+
+    public FirebaseHelper getFirebaseHelper() {
+        return firebaseHelper;
+    }
+
+    public void setFirebaseHelper(FirebaseHelper firebaseHelper) {
+        this.firebaseHelper = firebaseHelper;
+    }
+
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
+    }
+
+    public void setRecyclerView(RecyclerView recyclerView) {
+        this.recyclerView = recyclerView;
+    }
+
+    public RecyclerView.Adapter getmAdapter() {
+        return mAdapter;
+    }
+
+    public void setmAdapter(RecyclerView.Adapter mAdapter) {
+        this.mAdapter = mAdapter;
+    }
+
+    public RecyclerView.LayoutManager getLayoutManager() {
+        return layoutManager;
+    }
+
+    public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
+        this.layoutManager = layoutManager;
     }
 }

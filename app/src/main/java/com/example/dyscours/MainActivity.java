@@ -300,6 +300,11 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
             startActivity(intent);
             return true;
         }
+        else if (id == R.id.action_user_account){
+            Intent intent = new Intent(this, UserAccountActivity.class);
+            startActivity(intent);
+            return true;
+        }
 
         return false;
     }

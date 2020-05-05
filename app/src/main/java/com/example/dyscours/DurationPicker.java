@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Allows a cool clock dialog to pick minutes and seconds
  * From: https://stackoverflow.com/questions/19529500/how-to-implement-android-minutes-seconds-picker
  */
 public class DurationPicker extends TimePickerDialog {
