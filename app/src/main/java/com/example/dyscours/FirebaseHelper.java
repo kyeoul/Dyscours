@@ -614,7 +614,8 @@ public class FirebaseHelper {
                 }
                 boolean isColorRed = ((Boolean) dataSnapshot.child("isColorRed").getValue()).booleanValue();
                 boolean isApplauseOn = ((Boolean) dataSnapshot.child("isApplauseOn").getValue()).booleanValue();
-                finalThis.setCurrentSettings(new Settings(isColorRed, isApplauseOn));
+                int applauseSound = ((Long) dataSnapshot.child("applauseSound").getValue()).intValue();
+                finalThis.setCurrentSettings(new Settings(isColorRed, isApplauseOn, applauseSound));
             }
 
             @Override
@@ -629,6 +630,7 @@ public class FirebaseHelper {
         Map<String, Object> newData = new HashMap<>();
         newData.put("isColorRed", settings.isColorRed());
         newData.put("isApplauseOn", settings.isApplauseOn());
+        newData.put("applauseSound", settings.getApplauseSound());
         db.setValue(newData, new DatabaseReference.CompletionListener() {
             @Override
             public void onComplete(@Nullable DatabaseError databaseError, @NonNull DatabaseReference databaseReference) {

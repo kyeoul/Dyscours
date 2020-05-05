@@ -69,7 +69,8 @@ public class ChatActivity extends AppCompatActivity {
         timeView = findViewById(R.id.timerTextView);
         // Dealing with Settings
         settings = firebaseHelper.getSettings();
-        mediaPlayer = settings.isApplauseOn() ? MediaPlayer.create(this, R.raw.clapping1) : null;
+        int applauseSoundResId = ApplauseSound.getResIdFromId(settings.getApplauseSound());
+        mediaPlayer = settings.isApplauseOn() ? MediaPlayer.create(this, applauseSoundResId) : null;
 
         //Gets debate name and sets it to be the action bar title
         String debateName = debate.getDebateName();
