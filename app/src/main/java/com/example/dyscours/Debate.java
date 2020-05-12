@@ -16,10 +16,10 @@ public class Debate implements Serializable {
     private int startedTime;
     private int timeLimit;
     private String key;
-    private int user1Rating;
-    private int user2Rating;
-    private int debateRatingUser1;
-    private int debateRatingUser2;
+    private int user1Rating; // The user rating of user 1
+    private int user2Rating; // The user rating of user 2
+    private int debateRatingUser1; // The debate rating given by user 1
+    private int debateRatingUser2; // The debate rating given by user 2
     private boolean isOpenForParticipate;
     private boolean isClosed;
     private boolean hasUser2Joined;
@@ -27,8 +27,8 @@ public class Debate implements Serializable {
 
     /**
      * Constructor used when starting a debate
-     * @param debateName
-     * @param timeLimit
+     * @param debateName The name of the debate
+     * @param timeLimit The time limit of the debate, in seconds
      */
     public Debate(String debateName, int timeLimit){
         this.debateName = debateName;
@@ -42,7 +42,7 @@ public class Debate implements Serializable {
 
     /**
      * Constructor used when joining a debate
-     * @param key
+     * @param key The firebase key of the debate
      */
     public Debate (String key){
         this.userId = null;
@@ -55,12 +55,12 @@ public class Debate implements Serializable {
 
     /**
      * Constructor when debate information for preview is retrieved from the home screen
-     * @param key
-     * @param debateName
-     * @param user1Rating
-     * @param timeLimit
-     * @param isOpenForParticipate
-     * @param isClosed
+     * @param key The firebase key of the debate
+     * @param debateName The name of the debate
+     * @param user1Rating The user rating of user 1
+     * @param timeLimit The time limit of the debate, in seconds
+     * @param isOpenForParticipate Boolean corresponding to whether the debate is open for participation
+     * @param isClosed Boolean corresponding to whether the debate has closed: if this is true, then the debate will not show up
      */
     public Debate(String key, String debateName, int user1Rating, int timeLimit, boolean isOpenForParticipate, boolean isClosed){
         this.key = key;
@@ -179,6 +179,10 @@ public class Debate implements Serializable {
         this.hasUser2Joined = hasUser2Joined;
     }
 
+    /**
+     * Gives some basic information about the debate
+     * @return
+     */
     public String toString(){
         return getKey() + getDebateName() + getUserId();
     }
