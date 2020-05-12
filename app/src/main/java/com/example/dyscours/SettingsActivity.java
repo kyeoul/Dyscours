@@ -12,6 +12,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Allows settings to be set
+ */
 public class SettingsActivity extends AppCompatActivity {
     private Settings settings;
     private Switch colorSwitch;
@@ -28,7 +31,9 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         TextView title = toolbar.findViewById(R.id.titleTextSettings);
         title.setText("Settings");
+        // Get the current settings
         settings = FirebaseHelper.getInstance().getSettings();
+        // Get/set a variety of views
         colorSwitch = findViewById(R.id.colorSwitch);
         applauseSwitch = findViewById(R.id.applauseSwitch);
         colorSwitch.setChecked(settings.isColorRed());
@@ -45,7 +50,10 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Saves settings: updates the local settings and updates the version in the Firebase database.
+     * @param v
+     */
     public void saveSettings(View v){
         Settings newSettings = new Settings();
         newSettings.setApplauseOn(applauseSwitch.isChecked());

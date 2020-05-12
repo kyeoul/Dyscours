@@ -23,6 +23,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * Allows a user to sign up for an account
+ */
 public class SignUpActivity extends AppCompatActivity {
 
     public EditText emailId, password;

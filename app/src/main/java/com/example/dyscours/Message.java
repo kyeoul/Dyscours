@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Used https://config9.com/apps/firebase/when-making-a-pojo-in-firebase-can-you-use-servervalue-timestamp/
+ * This data structure is used to store information about a message
  */
 public class Message {
-    private String content;
-    private int user;
+    private String content; // The message body
+    private int user; // The user who sent the message: 1 or 2
 
     public Message(){
 

@@ -46,6 +46,9 @@ import java.util.ArrayList;
 
 import javax.xml.datatype.Duration;
 
+/**
+ * The home page where debates are displayed
+ */
 public class MainActivity extends AppCompatActivity implements fragmentSpectate.OnFragmentInteractionListener, fragmentParticipate.OnFragmentInteractionListener {
     public static final String TAG = "TagMainActivity";
     private FirebaseHelper firebaseHelper;
@@ -65,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        // Implements the bottom navigation that allows you to easily switch between participate and spectate
         BottomNavigationView navView = findViewById(R.id.navigationMain);
         navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -84,6 +87,7 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
             }
         });
 
+        // Starts array lists that hold the debates
         participateDebates = new ArrayList<Debate>();
         spectateDebates = new ArrayList<Debate>();
         firebaseHelper = FirebaseHelper.getInstance();
@@ -143,18 +147,23 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         firebaseHelper.initDebateListener(this);
     }
 
+    /**
+     * Adds a debate to the home page
+     * @param debate The debate to be added
+     */
     public void addDebate(Debate debate){
         Log.d(TAG, "addDebate" + debate.getUser1Rating());
-        if (firebaseHelper.getCurrentdebate() != null && debate.getKey().equals(firebaseHelper.getCurrentdebate().getKey())){
+        // Determine which category the debate should go into
+        if (firebaseHelper.getCurrentdebate() != null && debate.getKey().equals(firebaseHelper.getCurrentdebate().getKey())){ // invalid debate
             return;
         }
-        if (debate.isOpenForParticipate()){
+        if (debate.isOpenForParticipate()){ // participate
             participateDebates.add(0,debate);
             if (currentFragment instanceof fragmentParticipate){
                 currentFragment.updateViewAdded();
             }
         }
-        if (!debate.isClosed()) {
+        if (!debate.isClosed()) { // spectate
             spectateDebates.add(0, debate);
             if (currentFragment instanceof fragmentSpectate){
                 currentFragment.updateViewAdded();
@@ -163,6 +172,10 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
 
     }
 
+    /**
+     * Removes a debate from the home page
+     * @param debate The debate to be removed: all that matters is that the key in this debate is the same as the key of the debate that is to be removed.
+     */
     public void removeDebate(Debate debate){
         int indexS = findDebate(spectateDebates, debate.getKey(), 0, spectateDebates.size());
         Log.d(TAG,"" + indexS);
@@ -181,6 +194,14 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         }
     }
 
+    /**
+     * Recursively finds a debate in the debate list, which is sorted by new
+     * @param debates The array list of debates to search
+     * @param key The key of the debate to find
+     * @param start The start index of the range to search, inclusive
+     * @param end The end of the range to search, exclusive
+     * @return The index of the debate with key in debates
+     */
     private int findDebate(ArrayList<Debate> debates, String key, int start, int end){
         if (start >= end || start >= debates.size() || end <= 0){
             return -1;
@@ -198,6 +219,9 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         }
     }
 
+    /**
+     * Builds the Add debate dialog
+     */
     public void dialogBuilder(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final MainActivity finalThis = this;
@@ -241,6 +265,10 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
 
     public void onClickPopup(View v){showPopup(v, R.style.Widget_AppCompat_Light_PopupMenu);}
 
+    /**
+     * On Click for when a debate's time is to be set
+     * @param v
+     */
    public void addDebateOnClick(View v){
         final MainActivity finalThis = this;
         DurationPicker durationPicker = new DurationPicker(this, new TimePickerDialog.OnTimeSetListener() {
@@ -252,6 +280,11 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         durationPicker.show();
    }
 
+    /**
+     * Sets the visual time limit of the edit text
+     * @param minutes
+     * @param seconds
+     */
    public void setTimeLimit(int minutes, int seconds){
         if (currentDialog != null && currentDialog.isShowing()) {
             timeLimit = 60 * minutes + seconds;
@@ -280,6 +313,9 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
     }
 
     @Override
+    /**
+     * Manages the menu
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long

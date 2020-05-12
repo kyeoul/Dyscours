@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 /**
  * Recycler view implementation greatly inspired by https://developer.android.com/guide/topics/ui/layout/recyclerview
+ * This recycler view is used to show debates in on the home page
  */
 
 public class TopicRecyclerAdapter extends RecyclerView.Adapter<TopicRecyclerAdapter.MyViewHolder>{
