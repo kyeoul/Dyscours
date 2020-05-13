@@ -34,11 +34,15 @@ public class ListviewAdapter extends BaseAdapter {
         view = inflater.inflate(R.layout.recycler_topic_layout, null);
         Debate debate = debateList.get(i);
         String debateName = debate.getDebateName();
+        int debateTimeLimit = debate.getTimeLimit();
         int debateUserRating = debate.getUser1Rating();
         TextView debateNameView = (TextView) view.findViewById(R.id.debateName);
         debateNameView.setText(debateName);
         TextView debateUserView = (TextView) view.findViewById(R.id.debateUserRating);
         debateUserView.setText(Integer.toString(debateUserRating));
+        TextView timeLimitView = (TextView) view.findViewById(R.id.debateTimer);
+        String displayString = "Time Limit: " + Integer.toString(debateTimeLimit);
+        timeLimitView.setText(displayString);
         return view;
     }
 }

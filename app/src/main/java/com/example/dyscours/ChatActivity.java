@@ -25,6 +25,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 /**
@@ -40,6 +42,8 @@ public class ChatActivity extends AppCompatActivity {
     private ArrayList<Message> messages;
     private TextView timeView;
     private Settings settings;
+
+    private String debateOpinion;
 
     public static final int JOIN = 2;
     public static final int START = 1;
@@ -67,6 +71,7 @@ public class ChatActivity extends AppCompatActivity {
         isParticipate = intentExtras.getBoolean(IS_PARTICIPATE);
         boolean isUser1 = intentExtras.getBoolean(IS_USER_1);
         timeView = findViewById(R.id.timerTextView);
+        debateOpinion = debate.getDebateName();
         // Dealing with Settings
         settings = firebaseHelper.getSettings();
         int applauseSoundResId = ApplauseSound.getResIdFromId(settings.getApplauseSound());
@@ -233,6 +238,8 @@ public class ChatActivity extends AppCompatActivity {
     public void dialogBuilder(){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         final View finalView = getLayoutInflater().inflate(R.layout.dialog_debate_info, null);
+        TextView debateNameView = finalView.findViewById(R.id.infoText);
+        debateNameView.setText(debateOpinion);
         alertDialogBuilder.setTitle("Debate Information").setView(finalView).setNegativeButton("Back", null)
                 .setPositiveButton("Leave", new DialogInterface.OnClickListener() {
                     @Override
