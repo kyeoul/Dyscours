@@ -92,7 +92,6 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         ImageView imageView = (ImageView) findViewById(R.id.signInImage);
-        final TransitionDrawable loginBackground = (TransitionDrawable) imageView.getDrawable();
 
         changeDrawableTint(getResources().getColor(R.color.messageTextColor), emailId, getResources().getDrawable(R.drawable.ic_user));
         changeDrawableTint(getResources().getColor(R.color.messageTextColor), password, getResources().getDrawable(R.drawable.ic_password));
