@@ -820,6 +820,7 @@ public class FirebaseHelper {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getValue() == null){
+                    userAccountActivity.setUserScore("0");
                     return;
                 }
                 userAccountActivity.setUserScore(((Long) dataSnapshot.getValue()).toString());
