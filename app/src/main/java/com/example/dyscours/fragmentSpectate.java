@@ -31,6 +31,9 @@ import java.util.List;
  * to handle interaction events.
  * Use the {@link fragmentSpectate#newInstance} factory method to
  * create an instance of this fragment.
+ *
+ * Source: https://www.androidhive.info/2017/12/android-working-with-bottom-navigation/
+ * Purpose: Creating a fragment
  */
 public class fragmentSpectate extends DyscoursFragment{
     // TODO: Rename parameter arguments, choose names that match
@@ -95,7 +98,6 @@ public class fragmentSpectate extends DyscoursFragment{
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
-        //recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         RecyclerView.Adapter adapter = new TopicRecyclerAdapter(arrayList, this, (MainActivity) getActivity());
         recyclerView.setAdapter(adapter);
         topicRecyclerAdapter = adapter;

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.TimedText;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -44,6 +45,7 @@ public class ChatActivity extends AppCompatActivity {
     private Settings settings;
 
     private String debateOpinion;
+    private String currentTime;
 
     public static final int JOIN = 2;
     public static final int START = 1;
@@ -72,6 +74,7 @@ public class ChatActivity extends AppCompatActivity {
         boolean isUser1 = intentExtras.getBoolean(IS_USER_1);
         timeView = findViewById(R.id.timerTextView);
         debateOpinion = debate.getDebateName();
+
         // Dealing with Settings
         settings = firebaseHelper.getSettings();
         int applauseSoundResId = ApplauseSound.getResIdFromId(settings.getApplauseSound());
@@ -83,6 +86,11 @@ public class ChatActivity extends AppCompatActivity {
             debateName = debateName.substring(0,25);
             debateName += "...";
         }
+
+        /**
+         * Source: https://guides.codepath.com/android/using-the-app-toolbar
+         * Purpose: Changing the title of the toolbar
+         */
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         TextView title = toolbar.findViewById(R.id.titleText);
         title.setText(debateName);
@@ -192,6 +200,7 @@ public class ChatActivity extends AppCompatActivity {
         int minutes = seconds/60;
         seconds = seconds%60;
         String out = minutes + (seconds < 10 ? ":0" : ":") + seconds;
+        currentTime = out;
         timeView.setText(out);
     }
 
@@ -239,7 +248,8 @@ public class ChatActivity extends AppCompatActivity {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         final View finalView = getLayoutInflater().inflate(R.layout.dialog_debate_info, null);
         TextView debateNameView = finalView.findViewById(R.id.infoText);
-        debateNameView.setText(debateOpinion);
+        String opinionText = "Opinion: " + debateOpinion;
+        debateNameView.setText(opinionText);
         alertDialogBuilder.setTitle("Debate Information").setView(finalView).setNegativeButton("Back", null)
                 .setPositiveButton("Leave", new DialogInterface.OnClickListener() {
                     @Override

@@ -73,7 +73,15 @@ public class TopicRecyclerAdapter extends RecyclerView.Adapter<TopicRecyclerAdap
         userText.setText(debateName);
         String string = "Rating: " + Integer.toString(debateUserRating);
         ratingText.setText(string);
-        String displayString = "Time Limit: " + timeMinute + ":" + timeSecond;
+
+        //Formatting Time Limit (Courtesy of some person who wrote this)
+        int debateSeconds = debate.getTimeLimit();
+        int minutes = debateSeconds/60;
+        debateSeconds = debateSeconds%60;
+        String out = minutes + (debateSeconds < 10 ? ":0" : ":") + debateSeconds;
+        String currentTime = out;
+
+        String displayString = "Time Limit: " + currentTime;
         timeLimitText.setText(displayString);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

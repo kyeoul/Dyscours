@@ -25,22 +25,6 @@
                 android:text="@string/fillerString"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textSide1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="@string/fillerString"
-                app:layout_constraintTop_toBottomOf="@+id/infoText" />
-
-            <TextView
-                android:id="@+id/textSide2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:text="@string/fillerString"
-                app:layout_constraintTop_toBottomOf="@+id/textSide1" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

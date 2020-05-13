@@ -68,7 +68,10 @@ public class MainActivity extends AppCompatActivity implements fragmentSpectate.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // Implements the bottom navigation that allows you to easily switch between participate and spectate
+        /**
+         * Source: https://www.androidhive.info/2017/12/android-working-with-bottom-navigation/
+         * Purpose: Implementing fragments and BottomNavigationBars
+         */
         BottomNavigationView navView = findViewById(R.id.navigationMain);
         navView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

@@ -122,6 +122,12 @@ public class LoginActivity extends AppCompatActivity {
 
         ImageView imageView = (ImageView) findViewById(R.id.logInImage);
         final TransitionDrawable loginBackground = (TransitionDrawable) imageView.getDrawable();
+
+        /**
+         * Source: https://stackoverflow.com/questions/33272637/edittext-drawable-tint-not-possible
+         * Purpose: Changing the tint of drawables
+         */
+
         changeDrawableTint(getResources().getColor(R.color.messageTextColor), emailId, getResources().getDrawable(R.drawable.ic_user));
         changeDrawableTint(getResources().getColor(R.color.messageTextColor), password, getResources().getDrawable(R.drawable.ic_password));
 
