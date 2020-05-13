@@ -27,6 +27,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * This activity is used to log in to an account
+ */
 public class LoginActivity extends AppCompatActivity {
 
     public EditText emailId, password;

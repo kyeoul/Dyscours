@@ -95,7 +95,7 @@ public class ChatActivity extends AppCompatActivity {
             Log.d(TAG, "participateStart");
             EditText chatText = findViewById(R.id.messageEditText);
             chatText.setFocusable(false);
-            chatText.setHint("You're Spectating! Wait until the chat is over...");
+            chatText.setHint("You're Spectating! Click here to applaud.");
             Button send = findViewById(R.id.messageButton);
             send.setVisibility(View.INVISIBLE);
             LinearLayout linearLayout = findViewById(R.id.linearLayout);

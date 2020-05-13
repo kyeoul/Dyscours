@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+/**
+ * DEPRECATED: This extended ListviewAdapter is used to display debates in the Main Activity
+ */
 public class ListviewAdapter extends BaseAdapter {
 
     private LayoutInflater inflater ;

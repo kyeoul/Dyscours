@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
+/**
+ * An activity where a user can see various information about their Dyscours accounts
+ */
 public class UserAccountActivity extends AppCompatActivity {
     private TextView textViewEmailAddress;
     private TextView textViewUserScore;
@@ -26,10 +29,10 @@ public class UserAccountActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         TextView title = toolbar.findViewById(R.id.titleTextUserAccount);
         title.setText("Account Management");
-
+        //various views
         textViewEmailAddress = findViewById(R.id.textViewEmailAddress);
         textViewUserScore = findViewById(R.id.textViewUserScore);
-
+        // starts a listener that will populate the information
         FirebaseHelper.getInstance().startUserAccountListener(this);
         setEmailAddress(FirebaseHelper.getInstance().getUserEmail());
     }
